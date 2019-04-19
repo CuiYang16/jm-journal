@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="cn.edu.imut.jm.journal.domain.type.dao.JournalTypeDao">
+	<resultMap id="JournalTypeVoMap"
+		type="cn.edu.imut.jm.journal.domain.type.valobj.JournalTypeVo">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName"
+			jdbcType="VARCHAR" />
+		<result column="type_level" property="typeLevel"
+			jdbcType="INTEGER" />
+		<result column="type_index" property="typeIndex"
+			jdbcType="INTEGER" />
+		<result column="type_describe" property="typeDescribe"
+			jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId"
+			jdbcType="INTEGER" />
+		<collection property="children" column="type_id"
+			ofType="cn.edu.imut.jm.journal.domain.type.valobj.JournalTypeVo"
+			select="selectJournalTypeChildren"></collection>
+	</resultMap>
+
+	<sql id="JournalTypeVo_Column_List">
+		type_id, type_name, type_level, type_index,
+		type_describe,parent_id
+	</sql>
+	
+<!--查前两级 -->
+	<select id="selectJournalType" resultMap="JournalTypeVoMap">
+		select
+		<include refid="JournalTypeVo_Column_List" />
+		from journal_type
+		<where>
+			type_id &gt; 0 and type_id &lt; 1000
+		</where>
+		order by type_index asc
+	</select>
+
+	<select id="selectJournalTypeChildren"
+		resultMap="JournalTypeVoMap" parameterType="java.lang.Integer">
+		select
+		<include refid="JournalTypeVo_Column_List" />
+		from journal_type
+		<where>
+			<if test="_parameter !=null">
+				parent_id=#{typeId,jdbcType=INTEGER} and type_level &lt;
+				3
+			</if>
+		</where>
+		order by type_index asc
+	</select>
+<resultMap id="JournalTypeAllMap"
+		type="cn.edu.imut.jm.journal.domain.type.valobj.JournalTypeVo">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName"
+			jdbcType="VARCHAR" />
+		<result column="type_level" property="typeLevel"
+			jdbcType="INTEGER" />
+		<result column="type_index" property="typeIndex"
+			jdbcType="INTEGER" />
+		<result column="type_describe" property="typeDescribe"
+			jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId"
+			jdbcType="INTEGER" />
+		<collection property="children" column="type_id"
+			ofType="cn.edu.imut.jm.journal.domain.type.valobj.JournalTypeVo"
+			select="selectTypeChildren"></collection>
+	</resultMap>
+	
+	<!--查前所有 -->
+	<select id="selectJournalTypeAll" resultMap="JournalTypeAllMap">
+		select
+		<include refid="JournalTypeVo_Column_List" />
+		from journal_type
+		<where>
+			type_id &gt; 0 and type_id &lt; 1000
+		</where>
+		order by type_index asc
+	</select>
+
+	<select id="selectTypeChildren"
+		resultMap="JournalTypeAllMap" parameterType="java.lang.Integer">
+		select
+		<include refid="JournalTypeVo_Column_List" />
+		from journal_type
+		<where>
+			<if test="_parameter !=null">
+				parent_id=#{typeId,jdbcType=INTEGER}
+			</if>
+		</where>
+		order by type_index asc
+	</select>
+	
+	
+	<!-- 模糊查询id -->
+	<select id="queryLikeId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		<if test="_parameter != -1">
+			<bind name="pattern" value="_parameter+'___'" />
+			select max(type_id) from journal_type where type_id like
+			#{pattern}
+		</if>
+		<if test="_parameter ==-1">
+			select max(type_id) from journal_type where type_level=1
+		</if>
+
+	</select>
+
+	<!-- 查询最大index -->
+	<select id="queryMaxIndex" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select max(type_index) from journal_type where
+		parent_id
+		=-1
+	</select>
+
+	<select id="selectChildren" parameterType="java.util.List"
+		resultMap="JournalTypeVoMap">
+		select
+		<include refid="JournalTypeVo_Column_List" />
+		from journal_type
+		<where>
+			<if test="_parameter !=null">
+				parent_id in
+				<foreach collection="list" open="(" separator="," close=")"
+					item="typeId" index="index">
+					#{typeId,jdbcType=INTEGER}
+				</foreach>
+			</if>
+		</where>
+		order by type_index asc
+	</select>
+
+	<insert id="insertJournalType"
+		parameterType="cn.edu.imut.jm.journal.domain.type.entity.JournalType">
+		insert into journal_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="typeName != null">
+				type_name,
+			</if>
+			<if test="typeLevel != null">
+				type_level,
+			</if>
+			<if test="typeIndex != null">
+				type_index,
+			</if>
+			<if test="typeDescribe != null">
+				type_describe,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="typeId != null">
+				#{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="typeName != null">
+				#{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="typeLevel != null">
+				#{typeLevel,jdbcType=INTEGER},
+			</if>
+			<if test="typeIndex != null">
+				#{typeIndex,jdbcType=INTEGER},
+			</if>
+			<if test="typeDescribe != null">
+				#{typeDescribe,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateJournalType"
+		parameterType="cn.edu.imut.jm.journal.domain.type.entity.JournalType">
+		update journal_type
+		<set>
+			<if test="typeName != null">
+				type_name = #{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="typeDescribe != null">
+				type_describe = #{typeDescribe,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where type_id = #{typeId,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteJournalType" parameterType="java.lang.Integer">
+		delete from journal_type
+		where type_id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="typeId" index="index">
+			#{typeId,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+	<update id="updateToUp">
+		UPDATE journal_type AS
+		m1,journal_type AS
+		m2
+		SET
+		m1.type_index =
+		m2.type_index,m2.type_index =
+		m1.type_index
+		WHERE
+		m1.type_id=#{typeId,jdbcType=INTEGER} AND
+		m2.type_id=(
+		SELECT t.type_id
+		FROM (SELECT
+		type_id FROM
+		journal_type
+		where
+		type_index &lt;
+		#{typeIndex,jdbcType=INTEGER}
+		and
+		parent_id=-1
+		ORDER BY
+		type_index desc
+		LIMIT
+		1) t)
+	</update>
+
+	<update id="updateToDown">
+		UPDATE journal_type AS
+		m1,journal_type AS
+		m2
+		SET
+		m1.type_index =
+		m2.type_index,m2.type_index =
+		m1.type_index
+		WHERE
+		m1.type_id=#{typeId,jdbcType=INTEGER} AND
+		m2.type_id=(
+		SELECT t.type_id
+		FROM (SELECT
+		type_id FROM
+		journal_type
+		where
+		type_index &gt;
+		#{typeIndex,jdbcType=INTEGER}
+		and
+		parent_id=-1
+		ORDER BY
+		type_index asc
+		LIMIT
+		1) t)
+	</update>
+</mapper>

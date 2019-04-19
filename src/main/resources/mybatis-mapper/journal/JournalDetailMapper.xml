@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="cn.edu.imut.jm.journal.domain.journal.dao.JournalDetailDao">
+	<resultMap id="JournalDetailVoMap"
+		type="cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo">
+		<id column="journal_id" property="journalId" jdbcType="INTEGER" />
+		<result column="journal_name" property="journalName"
+			jdbcType="VARCHAR" />
+		<result column="journal_img" property="journalImg"
+			jdbcType="VARCHAR" />
+		<result column="author" property="author" jdbcType="VARCHAR" />
+		<result column="journal_level" property="journalLevel"
+			jdbcType="INTEGER" />
+		<result column="journal_join_time" property="journalJoinTime"
+			jdbcType="TIMESTAMP" />
+		<result column="publish_time" property="publishTime"
+			jdbcType="DATE" />
+		<result column="reel_number" property="reelNumber"
+			jdbcType="INTEGER" />
+		<result column="issue" property="issue" jdbcType="VARCHAR" />
+		<result column="total_issue" property="totalIssue"
+			jdbcType="INTEGER" />
+		<result column="CN" property="cn" jdbcType="VARCHAR" />
+		<result column="ISBN" property="isbn" jdbcType="VARCHAR" />
+		<result column="ISSN" property="issn" jdbcType="VARCHAR" />
+		<result column="publication_cycle" property="publicationCycle"
+			jdbcType="INTEGER" />
+		<result column="publishing_house" property="publishingHouse"
+			jdbcType="VARCHAR" />
+		<result column="journal_host" property="journalHost"
+			jdbcType="VARCHAR" />
+		<result column="is_foreign" property="isForeign"
+			jdbcType="TINYINT" />
+		<result column="publishing_area" property="publishingArea"
+			jdbcType="INTEGER" />
+		<result column="jounal_language" property="jounalLanguage"
+			jdbcType="INTEGER" />
+		<result column="foreign_codes" property="foreignCodes"
+			jdbcType="VARCHAR" />
+		<result column="domestic_code" property="domesticCode"
+			jdbcType="VARCHAR" />
+		<result column="format" property="format" jdbcType="INTEGER" />
+		<result column="page_number" property="pageNumber"
+			jdbcType="INTEGER" />
+		<result column="is_borrow" property="isBorrow"
+			jdbcType="TINYINT" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+		<result column="description" property="description"
+			jdbcType="VARCHAR" />
+		<result column="is_delete" property="isDelete"
+			jdbcType="TINYINT" />
+		<result column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="journal_type" property="journalType"
+			jdbcType="VARCHAR" />
+		<association property="type" column="type_id"
+			javaType="cn.edu.imut.jm.journal.domain.type.entity.JournalType"
+			select="selectTypeById"></association>
+		<collection property="journalImages" column="journal_id"
+			ofType="cn.edu.imut.jm.journal.domain.journal.entity.JournalImages"
+			select="getImages"></collection>
+	</resultMap>
+
+
+	<sql id="JournalDetails_Column_List">
+		journal_id, journal_name, journal_img, author,
+		journal_level, journal_join_time,
+		publish_time, reel_number, issue,
+		total_issue, CN, ISBN, ISSN,
+		publication_cycle,
+		publishing_house,
+		journal_host, is_foreign, publishing_area, jounal_language,
+		foreign_codes,
+		domestic_code, format, page_number, is_borrow, price,
+		description, is_delete,
+		type_id,
+		journal_type
+	</sql>
+	<select id="selectJournalDetails" resultMap="JournalDetailVoMap">
+		select
+		<include refid="JournalDetails_Column_List" />
+		from journal_details order by journal_id desc
+	</select>
+
+	<select id="selectJouanalById" parameterType="int"
+		resultMap="JournalDetailVoMap">
+		select
+		<include refid="JournalDetails_Column_List" />
+		from journal_details
+		where journal_id=#{journalId,jdbcType=INTEGER}
+	</select>
+	<select id="getImgUrl" parameterType="int" resultType="string">
+		select
+		journal_img from journal_details
+		where
+		journal_id=#{journalId,jdbcType=INTEGER}
+	</select>
+	<!--类别子查询 -->
+	<resultMap id="JournalTypeMap"
+		type="cn.edu.imut.jm.journal.domain.type.entity.JournalType">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName"
+			jdbcType="VARCHAR" />
+		<result column="type_level" property="typeLevel"
+			jdbcType="INTEGER" />
+		<result column="type_index" property="typeIndex"
+			jdbcType="INTEGER" />
+		<result column="type_describe" property="typeDescribe"
+			jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId"
+			jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="JournalType_Column_List">
+		type_id, type_name,type_describe
+	</sql>
+	<select id="selectTypeById" parameterType="int"
+		resultMap="JournalTypeMap">
+		select
+		<include refid="JournalType_Column_List" />
+		from journal_type where type_id=#{typeId,jdbcType=INTEGER}
+	</select>
+
+
+	<!--获取图片 -->
+	<resultMap id="JournalImagesMap"
+		type="cn.edu.imut.jm.journal.domain.journal.entity.JournalImages">
+		<id column="images_id" property="imagesId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="journal_id" property="journalId"
+			jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="getImages" parameterType="int"
+		resultMap="JournalImagesMap">
+		select images_id, name, url, journal_id from journal_images
+		where
+		journal_id=#{journalId,jdbcType=INTEGER}
+	</select>
+	<!--插入附加图片 -->
+	<insert id="insertJouranlImgs"
+		parameterType="cn.edu.imut.jm.journal.domain.journal.entity.JournalImages">
+		insert into journal_images
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="imagesId != null">
+				images_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="journalId != null">
+				journal_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="imagesId != null">
+				#{imagesId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="journalId != null">
+				#{journalId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 删除附加图片 -->
+	<delete id="delImgs" parameterType="int">
+		delete from journal_images
+		where journal_id=#{journalId,jdbcType=INTEGER}
+	</delete>
+
+	<!--更新封面 -->
+	<update id="updateJournalImage">
+		update journal_details
+		<set>
+			<if test="journalImg!=null">
+				journal_img=#{journalImg,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where journal_id=#{journalId,jdbcType=INTEGER}
+	</update>
+	<!-- 创建新纪录 -->
+	<insert id="insertJournalDetail"
+		parameterType="cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails"
+		useGeneratedKeys="true" keyColumn="journal_id" keyProperty="journalId">
+		insert into journal_details
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="journalId != null">
+				journal_id,
+			</if>
+			<if test="journalName != null">
+				journal_name,
+			</if>
+			<if test="journalImg != null">
+				journal_img,
+			</if>
+			<if test="author != null">
+				author,
+			</if>
+			<if test="journalLevel != null">
+				journal_level,
+			</if>
+			<if test="journalJoinTime != null">
+				journal_join_time,
+			</if>
+			<if test="publishTime != null">
+				publish_time,
+			</if>
+			<if test="reelNumber != null">
+				reel_number,
+			</if>
+			<if test="issue != null">
+				issue,
+			</if>
+			<if test="totalIssue != null">
+				total_issue,
+			</if>
+			<if test="cn != null">
+				CN,
+			</if>
+			<if test="isbn != null">
+				ISBN,
+			</if>
+			<if test="issn != null">
+				ISSN,
+			</if>
+			<if test="publicationCycle != null">
+				publication_cycle,
+			</if>
+			<if test="publishingHouse != null">
+				publishing_house,
+			</if>
+			<if test="journalHost != null">
+				journal_host,
+			</if>
+			<if test="isForeign != null">
+				is_foreign,
+			</if>
+			<if test="publishingArea != null">
+				publishing_area,
+			</if>
+			<if test="jounalLanguage != null">
+				jounal_language,
+			</if>
+			<if test="foreignCodes != null">
+				foreign_codes,
+			</if>
+			<if test="domesticCode != null">
+				domestic_code,
+			</if>
+			<if test="format != null">
+				format,
+			</if>
+			<if test="pageNumber != null">
+				page_number,
+			</if>
+			<if test="isBorrow != null">
+				is_borrow,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="journalType != null">
+				journal_type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="journalId != null">
+				#{journalId,jdbcType=INTEGER},
+			</if>
+			<if test="journalName != null">
+				#{journalName,jdbcType=VARCHAR},
+			</if>
+			<if test="journalImg != null">
+				#{journalImg,jdbcType=VARCHAR},
+			</if>
+			<if test="author != null">
+				#{author,jdbcType=VARCHAR},
+			</if>
+			<if test="journalLevel != null">
+				#{journalLevel,jdbcType=INTEGER},
+			</if>
+			<if test="journalJoinTime != null">
+				#{journalJoinTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="publishTime != null">
+				#{publishTime,jdbcType=DATE},
+			</if>
+			<if test="reelNumber != null">
+				#{reelNumber,jdbcType=INTEGER},
+			</if>
+			<if test="issue != null">
+				#{issue,jdbcType=VARCHAR},
+			</if>
+			<if test="totalIssue != null">
+				#{totalIssue,jdbcType=INTEGER},
+			</if>
+			<if test="cn != null">
+				#{cn,jdbcType=VARCHAR},
+			</if>
+			<if test="isbn != null">
+				#{isbn,jdbcType=VARCHAR},
+			</if>
+			<if test="issn != null">
+				#{issn,jdbcType=VARCHAR},
+			</if>
+			<if test="publicationCycle != null">
+				#{publicationCycle,jdbcType=INTEGER},
+			</if>
+			<if test="publishingHouse != null">
+				#{publishingHouse,jdbcType=VARCHAR},
+			</if>
+			<if test="journalHost != null">
+				#{journalHost,jdbcType=VARCHAR},
+			</if>
+			<if test="isForeign != null">
+				#{isForeign,jdbcType=TINYINT},
+			</if>
+			<if test="publishingArea != null">
+				#{publishingArea,jdbcType=INTEGER},
+			</if>
+			<if test="jounalLanguage != null">
+				#{jounalLanguage,jdbcType=INTEGER},
+			</if>
+			<if test="foreignCodes != null">
+				#{foreignCodes,jdbcType=VARCHAR},
+			</if>
+			<if test="domesticCode != null">
+				#{domesticCode,jdbcType=VARCHAR},
+			</if>
+			<if test="format != null">
+				#{format,jdbcType=INTEGER},
+			</if>
+			<if test="pageNumber != null">
+				#{pageNumber,jdbcType=INTEGER},
+			</if>
+			<if test="isBorrow != null">
+				#{isBorrow,jdbcType=TINYINT},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=TINYINT},
+			</if>
+			<if test="typeId != null">
+				#{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="journalType != null">
+				#{journalType,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<!-- 更新杂志信息 -->
+	<update id="updateJournalDetail"
+		parameterType="cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails">
+		update journal_details
+		<set>
+			<if test="journalName != null">
+				journal_name = #{journalName,jdbcType=VARCHAR},
+			</if>
+			<if test="journalImg != null">
+				journal_img = #{journalImg,jdbcType=VARCHAR},
+			</if>
+			<if test="author != null">
+				author = #{author,jdbcType=VARCHAR},
+			</if>
+			<if test="journalLevel != null">
+				journal_level = #{journalLevel,jdbcType=INTEGER},
+			</if>
+			<if test="journalJoinTime != null">
+				journal_join_time =
+				#{journalJoinTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="publishTime != null">
+				publish_time = #{publishTime,jdbcType=DATE},
+			</if>
+			<if test="reelNumber != null">
+				reel_number = #{reelNumber,jdbcType=INTEGER},
+			</if>
+			<if test="issue != null">
+				issue = #{issue,jdbcType=VARCHAR},
+			</if>
+			<if test="totalIssue != null">
+				total_issue = #{totalIssue,jdbcType=INTEGER},
+			</if>
+			<if test="cn != null">
+				CN = #{cn,jdbcType=VARCHAR},
+			</if>
+			<if test="isbn != null">
+				ISBN = #{isbn,jdbcType=VARCHAR},
+			</if>
+			<if test="issn != null">
+				ISSN = #{issn,jdbcType=VARCHAR},
+			</if>
+			<if test="publicationCycle != null">
+				publication_cycle = #{publicationCycle,jdbcType=INTEGER},
+			</if>
+			<if test="publishingHouse != null">
+				publishing_house = #{publishingHouse,jdbcType=VARCHAR},
+			</if>
+			<if test="journalHost != null">
+				journal_host = #{journalHost,jdbcType=VARCHAR},
+			</if>
+			<if test="isForeign != null">
+				is_foreign = #{isForeign,jdbcType=TINYINT},
+			</if>
+			<if test="publishingArea != null">
+				publishing_area = #{publishingArea,jdbcType=INTEGER},
+			</if>
+			<if test="jounalLanguage != null">
+				jounal_language = #{jounalLanguage,jdbcType=INTEGER},
+			</if>
+			<if test="foreignCodes != null">
+				foreign_codes = #{foreignCodes,jdbcType=VARCHAR},
+			</if>
+			<if test="domesticCode != null">
+				domestic_code = #{domesticCode,jdbcType=VARCHAR},
+			</if>
+			<if test="format != null">
+				format = #{format,jdbcType=INTEGER},
+			</if>
+			<if test="pageNumber != null">
+				page_number = #{pageNumber,jdbcType=INTEGER},
+			</if>
+			<if test="isBorrow != null">
+				is_borrow = #{isBorrow,jdbcType=TINYINT},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="isDelete != null">
+				is_delete = #{isDelete,jdbcType=TINYINT},
+			</if>
+			<if test="typeId != null">
+				type_id = #{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="journalType != null">
+				journal_type = #{journalType,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where journal_id = #{journalId,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateJournalDetailDel" parameterType="int">
+		update journal_details
+		<set>
+			is_delete = 1,
+		</set>
+		where journal_id = #{journalId,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteJournal" parameterType="java.lang.Integer">
+		delete from
+		journal_details
+		where journal_id = #{journalId,jdbcType=INTEGER}
+	</delete>
+	<!--批量更新删除 -->
+	<update id="updateMultipleJournalDetailDel"
+		parameterType="java.util.List">
+		update journal_details
+		<set>
+			is_delete = 1,
+		</set>
+		where journal_id in
+		<foreach collection="list" item="journalId" index="index"
+			open="(" close=")" separator=",">
+			#{journalId,jdbcType=INTEGER}
+		</foreach>
+	</update>
+	<delete id="deleteMultipleJournal"
+		parameterType="java.util.List">
+		delete from journal_details
+		where journal_id in
+		<foreach collection="list" item="journalId" index="index"
+			open="(" close=")" separator=",">
+			#{journalId,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+</mapper>
