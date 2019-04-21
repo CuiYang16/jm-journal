@@ -29,9 +29,16 @@ public class JournalDetailController implements JournalDetailServiceRemoteApi {
 	private JournalDetailService journalDetailService;
 
 	public ResponseVo<JournalDetailVo> selectJournalDetails(@RequestParam("pageNum") Integer pageNum,
-			@RequestParam("pageSize") Integer pageSize) {
-
-		return new ResponseVo<JournalDetailVo>(journalDetailService.selectJournalDetails(pageNum, pageSize));
+			@RequestParam("pageSize") Integer pageSize, @RequestParam("isBorrow") Integer isBorrow,
+			@RequestParam("isDelete") Integer isDelete) {
+		if (isBorrow == 2) {
+			isBorrow = null;
+		}
+		if (isDelete == 2) {
+			isDelete = null;
+		}
+		return new ResponseVo<JournalDetailVo>(
+				journalDetailService.selectJournalDetails(pageNum, pageSize, isBorrow, isDelete));
 	}
 
 	public ResponseVo updateJournalImage(@RequestParam("journalId") Integer journalId,

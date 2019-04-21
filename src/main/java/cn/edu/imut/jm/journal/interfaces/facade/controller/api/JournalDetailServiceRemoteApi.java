@@ -16,7 +16,8 @@ public interface JournalDetailServiceRemoteApi {
 
 	@RequestMapping(value = "/get-journals", method = RequestMethod.GET)
 	ResponseVo<JournalDetailVo> selectJournalDetails(@RequestParam("pageNum") Integer pageNum,
-			@RequestParam("pageSize") Integer pageSize);
+			@RequestParam("pageSize") Integer pageSize, @RequestParam("isBorrow") Integer isBorrow,
+			@RequestParam("isDelete") Integer isDelete);
 
 	@RequestMapping(value = "/get-journal", method = RequestMethod.GET)
 	ResponseVo selectJouanalById(@RequestParam("journalId") Integer journalId);

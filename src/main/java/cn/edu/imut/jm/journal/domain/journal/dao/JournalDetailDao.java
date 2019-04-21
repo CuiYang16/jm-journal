@@ -12,7 +12,8 @@ import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 @Mapper
 public interface JournalDetailDao {
 
-	List<JournalDetailVo> selectJournalDetails();
+	List<JournalDetailVo> selectJournalDetails(@Param("isBorrow") Integer isBorrow,
+			@Param("isDelete") Integer isDelete);
 
 	JournalDetailVo selectJouanalById(Integer journalId);
 

@@ -10,7 +10,8 @@ import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 
 public interface JournalDetailService {
 
-	PageInfo<JournalDetailVo> selectJournalDetails(Integer pageNum, Integer pageSize);
+	PageInfo<JournalDetailVo> selectJournalDetails(Integer pageNum, Integer pageSize, Integer isBorrow,
+			Integer isDelete);
 
 	JournalDetailVo selectJouanalById(Integer journalId);
 

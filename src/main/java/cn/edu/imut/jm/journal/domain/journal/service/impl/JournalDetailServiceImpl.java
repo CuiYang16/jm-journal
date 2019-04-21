@@ -22,9 +22,10 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 	private JournalDetailDao journalDetailDao;
 
 	@Override
-	public PageInfo<JournalDetailVo> selectJournalDetails(Integer pageNum, Integer pageSize) {
+	public PageInfo<JournalDetailVo> selectJournalDetails(Integer pageNum, Integer pageSize, Integer isBorrow,
+			Integer isDelete) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<JournalDetailVo> journalDetails = journalDetailDao.selectJournalDetails();
+		List<JournalDetailVo> journalDetails = journalDetailDao.selectJournalDetails(isBorrow, isDelete);
 		PageInfo<JournalDetailVo> pageInfo = new PageInfo<JournalDetailVo>(journalDetails);
 		pageInfo.setPageNum(pageNum);
 		pageInfo.setPageSize(pageSize);
