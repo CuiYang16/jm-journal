@@ -9,10 +9,10 @@
 		<version>1.5.20.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>cn.edu.imut.jm.borrow</groupId>
-	<artifactId>jm-borrow</artifactId>
+	<groupId>cn.edu.imut.jm.journal</groupId>
+	<artifactId>jm-journal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>jm-borrow</name>
+	<name>jm-journal</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
