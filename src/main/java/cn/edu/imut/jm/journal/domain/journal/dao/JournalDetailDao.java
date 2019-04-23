@@ -15,6 +15,8 @@ public interface JournalDetailDao {
 	List<JournalDetailVo> selectJournalDetails(@Param("isBorrow") Integer isBorrow,
 			@Param("isDelete") Integer isDelete);
 
+	List<JournalDetailVo> selectJournals();
+
 	JournalDetailVo selectJouanalById(Integer journalId);
 
 	Integer updateJournalImage(@Param("journalId") Integer journalId, @Param("journalImg") String journalImg);

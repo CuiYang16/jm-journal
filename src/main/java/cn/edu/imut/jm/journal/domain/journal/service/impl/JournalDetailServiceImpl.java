@@ -136,4 +136,10 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 		return null;
 	}
 
+	@Override
+	public List<JournalDetailVo> selectJournals() {
+
+		return journalDetailDao.selectJournals();
+	}
+
 }

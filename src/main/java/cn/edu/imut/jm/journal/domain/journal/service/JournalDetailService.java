@@ -13,6 +13,8 @@ public interface JournalDetailService {
 	PageInfo<JournalDetailVo> selectJournalDetails(Integer pageNum, Integer pageSize, Integer isBorrow,
 			Integer isDelete);
 
+	List<JournalDetailVo> selectJournals();
+
 	JournalDetailVo selectJouanalById(Integer journalId);
 
 	Integer updateJournalImage(Integer journalId, String journalImg);

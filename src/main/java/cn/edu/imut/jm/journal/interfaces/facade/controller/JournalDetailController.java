@@ -18,11 +18,11 @@ import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
 import cn.edu.imut.jm.journal.domain.journal.service.JournalDetailService;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
-import cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailServiceRemoteApi;
+import cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi;
 
 @RestController
 
-public class JournalDetailController implements JournalDetailServiceRemoteApi {
+public class JournalDetailController implements JournalDetailControllerApi {
 
 	private static final String JOURNAL_IMG_FILE_PATH = "E:/img/";
 	@Autowired

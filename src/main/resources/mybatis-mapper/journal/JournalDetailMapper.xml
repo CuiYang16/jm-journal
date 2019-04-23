@@ -47,7 +47,7 @@
 			jdbcType="TINYINT" />
 		<result column="price" property="price" jdbcType="DECIMAL" />
 		<result column="description" property="description"
-			jdbcType="VARCHAR" />
+			jdbcType="LONGVARCHAR" />
 		<result column="is_delete" property="isDelete"
 			jdbcType="TINYINT" />
 		<result column="type_id" property="typeId" jdbcType="INTEGER" />
@@ -91,6 +91,15 @@
 		order by journal_id desc
 	</select>
 
+	<select id="selectJournals" resultMap="JournalDetailVoMap">
+		select
+		<include refid="JournalDetails_Column_List" />
+		from journal_details
+		<where>
+			is_delete=0 and is_borrow=1
+		</where>
+		order by journal_id desc
+	</select>
 	<select id="selectJouanalById" parameterType="int"
 		resultMap="JournalDetailVoMap">
 		select
@@ -368,7 +377,7 @@
 				#{price,jdbcType=DECIMAL},
 			</if>
 			<if test="description != null">
-				#{description,jdbcType=VARCHAR},
+				#{description,jdbcType=LONGVARCHAR},
 			</if>
 			<if test="isDelete != null">
 				#{isDelete,jdbcType=TINYINT},
@@ -460,7 +469,7 @@
 				price = #{price,jdbcType=DECIMAL},
 			</if>
 			<if test="description != null">
-				description = #{description,jdbcType=VARCHAR},
+				description = #{description,jdbcType=LONGVARCHAR},
 			</if>
 			<if test="isDelete != null">
 				is_delete = #{isDelete,jdbcType=TINYINT},
