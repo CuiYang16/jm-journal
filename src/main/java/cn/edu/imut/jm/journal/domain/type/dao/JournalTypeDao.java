@@ -30,4 +30,7 @@ public interface JournalTypeDao {
 	Integer updateToDown(@Param("typeId") Integer typeId, @Param("typeIndex") Integer typeIndex);
 
 	List<JournalTypeVo> selectJournalTypeAll();
+
+//	前端请求
+	List<JournalType> selectFirstLevel();
 }

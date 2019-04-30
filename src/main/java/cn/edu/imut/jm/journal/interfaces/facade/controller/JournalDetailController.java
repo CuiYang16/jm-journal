@@ -24,7 +24,7 @@ import cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailCont
 
 public class JournalDetailController implements JournalDetailControllerApi {
 
-	private static final String JOURNAL_IMG_FILE_PATH = "E:/img/";
+	private static final String JOURNAL_IMG_FILE_PATH = "F:/MyWorkSpace/bishe-vue/journal-door/static/journal-img/";
 	@Autowired
 	private JournalDetailService journalDetailService;
 
@@ -185,6 +185,12 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		List<Integer> ids = JSON.parseArray(JSON.toJSONString(JSON.parseObject(json).getJSONArray("delIds")),
 				Integer.class);
 		return new ResponseVo<>(journalDetailService.updateMultipleJournalDetailDel(ids));
+	}
+
+//	前端请求
+	@Override
+	public List<JournalDetailVo> getJournalDetails() {
+		return journalDetailService.getJournalDetails();
 	}
 
 }

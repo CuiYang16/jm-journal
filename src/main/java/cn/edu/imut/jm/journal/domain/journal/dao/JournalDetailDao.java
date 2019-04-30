@@ -41,4 +41,6 @@ public interface JournalDetailDao {
 
 	Integer deleteMultipleJournal(List<Integer> ids);
 
+//	前端请求
+	List<JournalDetailVo> getJournalDetails();
 }

@@ -250,4 +250,23 @@
 		LIMIT
 		1) t)
 	</update>
+	
+	<!-- 前端请求 -->
+	<resultMap id="JournalTypeMap" type="cn.edu.imut.jm.journal.domain.type.entity.JournalType" >
+    <id column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="type_level" property="typeLevel" jdbcType="INTEGER" />
+    <result column="type_index" property="typeIndex" jdbcType="INTEGER" />
+    <result column="type_describe" property="typeDescribe" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="JournalType_Column_List" >
+    type_id, type_name, type_level, type_index, type_describe, parent_id
+  </sql>
+  <select id="selectFirstLevel" resultMap="JournalTypeMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="JournalType_Column_List" />
+    from journal_type
+    where type_level=1
+  </select>
 </mapper>

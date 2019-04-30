@@ -142,4 +142,11 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 		return journalDetailDao.selectJournals();
 	}
 
+//	前端请求
+	@Override
+	public List<JournalDetailVo> getJournalDetails() {
+
+		return journalDetailDao.getJournalDetails();
+	}
+
 }

@@ -518,4 +518,12 @@
 			#{journalId,jdbcType=INTEGER}
 		</foreach>
 	</delete>
+	
+	<!-- 前端请求 -->
+	<select id="getJournalDetails" resultMap="JournalDetailVoMap">
+		select
+		<include refid="JournalDetails_Column_List" />
+		from journal_details
+		order by journal_join_time desc limit 8
+	</select>
 </mapper>

@@ -80,4 +80,11 @@ public class JournalTypeController implements JournalTypeServiceRemoteApi {
 		return new ResponseVo<JournalTypeVo>(journalTypeService.selectJournalTypeAll());
 	}
 
+//	前端请求
+	@Override
+	public List<JournalType> selectFirstLevel() {
+
+		return journalTypeService.selectFirstLevel();
+	}
+
 }

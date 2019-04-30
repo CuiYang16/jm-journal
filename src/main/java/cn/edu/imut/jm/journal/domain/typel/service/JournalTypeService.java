@@ -22,4 +22,7 @@ public interface JournalTypeService {
 	Integer updateToDown(Integer typeId, Integer typeIndex);
 
 	List<JournalTypeVo> selectJournalTypeAll();
+
+//	前端请求
+	List<JournalType> selectFirstLevel();
 }

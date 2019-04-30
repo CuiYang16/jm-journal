@@ -1,10 +1,13 @@
 package cn.edu.imut.jm.journal.interfaces.facade.controller.api;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import cn.edu.imut.infrastructrue.util.ResponseVo;
+import cn.edu.imut.jm.journal.domain.type.entity.JournalType;
 import cn.edu.imut.jm.journal.domain.type.valobj.JournalTypeVo;
 
 @RequestMapping("/journal-type")
@@ -33,4 +36,8 @@ public interface JournalTypeServiceRemoteApi {
 
 	@RequestMapping(value = "/get-alltype", method = RequestMethod.GET)
 	ResponseVo<JournalTypeVo> selectJournalTypeAll();
+
+//	前端请求
+	@RequestMapping(value = "/get/f-type", method = RequestMethod.GET)
+	List<JournalType> selectFirstLevel();
 }

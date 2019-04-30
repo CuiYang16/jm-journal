@@ -1,5 +1,7 @@
 package cn.edu.imut.jm.journal.interfaces.facade.controller.api;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,4 +62,8 @@ public interface JournalDetailControllerApi {
 //	假批量删
 	@RequestMapping(value = "/del-mul-journal", method = RequestMethod.PUT)
 	ResponseVo updateMultipleJournalDetailDel(@RequestBody String json);
+
+//	前端请求
+	@RequestMapping(value = "/get/new-journal", method = RequestMethod.GET)
+	List<JournalDetailVo> getJournalDetails();
 }

@@ -91,4 +91,11 @@ public class JournalTypeServiceImpl implements JournalTypeService {
 		return journalTypeDao.selectJournalTypeAll();
 	}
 
+//	前端请求
+	@Override
+	public List<JournalType> selectFirstLevel() {
+
+		return journalTypeDao.selectFirstLevel();
+	}
+
 }
