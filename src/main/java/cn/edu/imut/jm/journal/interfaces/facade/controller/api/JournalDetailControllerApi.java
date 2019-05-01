@@ -66,4 +66,7 @@ public interface JournalDetailControllerApi {
 //	前端请求
 	@RequestMapping(value = "/get/new-journal", method = RequestMethod.GET)
 	List<JournalDetailVo> getJournalDetails();
+
+	@RequestMapping(value = "/get/check-journal", method = { RequestMethod.POST, RequestMethod.GET })
+	List<JournalDetailVo> getJournalDetailByCheck(@RequestBody String json);
 }

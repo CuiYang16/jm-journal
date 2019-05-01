@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
+import cn.edu.imut.jm.journal.domain.journal.valobj.CheckValue;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 
 public interface JournalDetailService {
@@ -41,4 +42,6 @@ public interface JournalDetailService {
 
 //	前端请求
 	List<JournalDetailVo> getJournalDetails();
+
+	List<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue);
 }

@@ -17,6 +17,7 @@ import cn.edu.imut.infrastructrue.util.ResponseVo;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
 import cn.edu.imut.jm.journal.domain.journal.service.JournalDetailService;
+import cn.edu.imut.jm.journal.domain.journal.valobj.CheckValue;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 import cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi;
 
@@ -191,6 +192,14 @@ public class JournalDetailController implements JournalDetailControllerApi {
 	@Override
 	public List<JournalDetailVo> getJournalDetails() {
 		return journalDetailService.getJournalDetails();
+	}
+
+	@Override
+	public List<JournalDetailVo> getJournalDetailByCheck(@RequestBody String json) {
+		CheckValue checkValue = JSON.toJavaObject(JSON.parseObject(json).getJSONObject("checkValue"), CheckValue.class);
+		// CheckValue checkValue = new CheckValue(type, level, cycle, area, time);
+
+		return journalDetailService.getJournalDetailByCheck(checkValue);
 	}
 
 }

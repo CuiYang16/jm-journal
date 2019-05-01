@@ -1,5 +1,6 @@
 package cn.edu.imut.jm.journal.domain.journal.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import cn.edu.imut.jm.journal.domain.journal.dao.JournalDetailDao;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
 import cn.edu.imut.jm.journal.domain.journal.service.JournalDetailService;
+import cn.edu.imut.jm.journal.domain.journal.valobj.CheckValue;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 
 @Service
@@ -147,6 +149,55 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 	public List<JournalDetailVo> getJournalDetails() {
 
 		return journalDetailDao.getJournalDetails();
+	}
+
+	@Override
+	public List<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue) {
+		if (checkValue != null) {
+			if (checkValue.getTime() != null) {
+				Calendar cl = Calendar.getInstance();
+				Calendar cl2 = Calendar.getInstance();
+				switch (checkValue.getTime()) {
+				case 1:
+					cl.add(Calendar.MONTH, -1);
+					checkValue.setEndTime(cl.getTime());
+					checkValue.setStartTime(null);
+					break;
+
+				case 2:
+					cl.add(Calendar.MONTH, -3);
+					checkValue.setEndTime(cl.getTime());
+					cl2.add(Calendar.MONTH, -1);
+					checkValue.setStartTime(cl2.getTime());
+					break;
+				case 3:
+					cl.add(Calendar.MONTH, -6);
+					checkValue.setEndTime(cl.getTime());
+					cl2.add(Calendar.MONTH, -3);
+					checkValue.setStartTime(cl2.getTime());
+					break;
+				case 4:
+					cl.add(Calendar.MONTH, -9);
+					checkValue.setEndTime(cl.getTime());
+					cl2.add(Calendar.MONTH, -6);
+					checkValue.setStartTime(cl2.getTime());
+					break;
+				case 5:
+					checkValue.setEndTime(null);
+					cl2.add(Calendar.YEAR, -1);
+					checkValue.setStartTime(cl2.getTime());
+					break;
+				default:
+					checkValue.setEndTime(null);
+					checkValue.setStartTime(null);
+					break;
+				}
+			}
+
+			System.out.println(checkValue.toString());
+			return journalDetailDao.getJournalDetailByCheck(checkValue);
+		}
+		return null;
 	}
 
 }
