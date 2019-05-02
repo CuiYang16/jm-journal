@@ -6,9 +6,9 @@
 		type="cn.edu.imut.jm.journal.domain.borrow.entity.Borrow">
 		<id column="borrow_id" property="borrowId" jdbcType="INTEGER" />
 		<result column="borrow_time" property="borrowTime"
-			jdbcType="TIMESTAMP" />
+			jdbcType="DATE" />
 		<result column="return_time" property="returnTime"
-			jdbcType="TIMESTAMP" />
+			jdbcType="DATE" />
 		<result column="reality_days" property="realityDays"
 			jdbcType="INTEGER" />
 		<result column="is_overdue" property="isOverdue"
@@ -27,9 +27,9 @@
 	<resultMap
 		type="cn.edu.imut.jm.journal.domain.borrow.valobj.BorrowVo"
 		id="BorrowVoMap" extends="BorrowMap">
-		<association property="journalDetailVo"
+		<association property="journalDetails"
 			column="journal_id"
-			javaType="cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo"
+			javaType="cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails"
 			select="selectJournal"></association>
 	</resultMap>
 	<sql id="Borrow_Column_List">
@@ -37,15 +37,59 @@
 		penalty,
 		is_payment, is_delete, user_id, journal_id
 	</sql>
-	<select id="selectByUserId" resultMap="BorrowMap"
-		parameterType="java.lang.Integer">
+	<select id="selectByUserId" resultMap="BorrowVoMap">
 		select
 		<include refid="Borrow_Column_List" />
 		from borrow
-		where user_id = #{userId,jdbcType=INTEGER}
+		<where>
+			user_id = #{userId,jdbcType=INTEGER} 
+			<if test="isOverdue=='1'.toString()">
+			and return_time &lt;= NOW()
+			</if>
+			<if test="isOverdue=='0'.toString()">
+			and return_time &gt; NOW()
+			</if>
+			<if test="isPayment=='1'.toString()">
+			and is_payment =1
+			</if>
+			<if test="isPayment=='0'.toString()">
+			and is_payment =0
+			</if>
+		</where>
+
 	</select>
-	<select id="selectJournal" parameterType="int">
-		select journal_id, journal_name, journal_img, reel_number, issue,
+	 <resultMap id="JournalDetailsMap" type="cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails" >
+    <id column="journal_id" property="journalId" jdbcType="INTEGER" />
+    <result column="journal_name" property="journalName" jdbcType="VARCHAR" />
+    <result column="journal_img" property="journalImg" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="journal_level" property="journalLevel" jdbcType="INTEGER" />
+    <result column="journal_join_time" property="journalJoinTime" jdbcType="DATE" />
+    <result column="publish_time" property="publishTime" jdbcType="DATE" />
+    <result column="reel_number" property="reelNumber" jdbcType="INTEGER" />
+    <result column="issue" property="issue" jdbcType="VARCHAR" />
+    <result column="total_issue" property="totalIssue" jdbcType="INTEGER" />
+    <result column="CN" property="cn" jdbcType="VARCHAR" />
+    <result column="ISBN" property="isbn" jdbcType="VARCHAR" />
+    <result column="ISSN" property="issn" jdbcType="VARCHAR" />
+    <result column="publication_cycle" property="publicationCycle" jdbcType="INTEGER" />
+    <result column="publishing_house" property="publishingHouse" jdbcType="VARCHAR" />
+    <result column="journal_host" property="journalHost" jdbcType="VARCHAR" />
+    <result column="is_foreign" property="isForeign" jdbcType="BIT" />
+    <result column="publishing_area" property="publishingArea" jdbcType="INTEGER" />
+    <result column="jounal_language" property="jounalLanguage" jdbcType="INTEGER" />
+    <result column="foreign_codes" property="foreignCodes" jdbcType="VARCHAR" />
+    <result column="domestic_code" property="domesticCode" jdbcType="VARCHAR" />
+    <result column="format" property="format" jdbcType="INTEGER" />
+    <result column="page_number" property="pageNumber" jdbcType="INTEGER" />
+    <result column="is_borrow" property="isBorrow" jdbcType="BIT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="is_delete" property="isDelete" jdbcType="BIT" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="journal_type" property="journalType" jdbcType="VARCHAR" />
+  </resultMap>
+	<select id="selectJournal" parameterType="int" resultMap="JournalDetailsMap">
+		select journal_id, journal_name, journal_img, issue,
 		total_issue, CN, ISBN, ISSN,
 		publishing_house,
 		journal_host from
@@ -95,10 +139,10 @@
 				#{borrowId,jdbcType=INTEGER},
 			</if>
 			<if test="borrowTime != null">
-				#{borrowTime,jdbcType=TIMESTAMP},
+				#{borrowTime,jdbcType=DATE},
 			</if>
 			<if test="returnTime != null">
-				#{returnTime,jdbcType=TIMESTAMP},
+				#{returnTime,jdbcType=DATE},
 			</if>
 			<if test="realityDays != null">
 				#{realityDays,jdbcType=INTEGER},

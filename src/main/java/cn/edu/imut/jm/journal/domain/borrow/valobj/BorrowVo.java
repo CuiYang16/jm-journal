@@ -1,23 +1,18 @@
 package cn.edu.imut.jm.journal.domain.borrow.valobj;
 
 import cn.edu.imut.jm.journal.domain.borrow.entity.Borrow;
-import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
+import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 
 public class BorrowVo extends Borrow {
 
-	private JournalDetailVo journalDetailVo;
+	private JournalDetails journalDetails;
 
-	public JournalDetailVo getJournalDetailVo() {
-		return journalDetailVo;
+	public JournalDetails getJournalDetails() {
+		return journalDetails;
 	}
 
-	public void setJournalDetailVo(JournalDetailVo journalDetailVo) {
-		this.journalDetailVo = journalDetailVo;
-	}
-
-	public BorrowVo(JournalDetailVo journalDetailVo) {
-		super();
-		this.journalDetailVo = journalDetailVo;
+	public void setJournalDetails(JournalDetails journalDetails) {
+		this.journalDetails = journalDetails;
 	}
 
 	public BorrowVo() {
