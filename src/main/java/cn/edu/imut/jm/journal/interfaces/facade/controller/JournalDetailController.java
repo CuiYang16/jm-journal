@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
 
 import cn.edu.imut.infrastructrue.util.ResponseVo;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
@@ -195,11 +196,12 @@ public class JournalDetailController implements JournalDetailControllerApi {
 	}
 
 	@Override
-	public List<JournalDetailVo> getJournalDetailByCheck(@RequestBody String json) {
+	public PageInfo<JournalDetailVo> getJournalDetailByCheck(@RequestBody String json) {
 		CheckValue checkValue = JSON.toJavaObject(JSON.parseObject(json).getJSONObject("checkValue"), CheckValue.class);
-		// CheckValue checkValue = new CheckValue(type, level, cycle, area, time);
-
-		return journalDetailService.getJournalDetailByCheck(checkValue);
+		Integer currentPage = JSON.parseObject(json).getInteger("currentPage");
+		Integer pageSize = JSON.parseObject(json).getInteger("pageSize");
+		Integer dateSort = JSON.parseObject(json).getInteger("dateSort");
+		return journalDetailService.getJournalDetailByCheck(checkValue, currentPage, pageSize, dateSort);
 	}
 
 }

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.PageInfo;
+
 import cn.edu.imut.infrastructrue.util.ResponseVo;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
@@ -68,5 +70,5 @@ public interface JournalDetailControllerApi {
 	List<JournalDetailVo> getJournalDetails();
 
 	@RequestMapping(value = "/get/check-journal", method = { RequestMethod.POST, RequestMethod.GET })
-	List<JournalDetailVo> getJournalDetailByCheck(@RequestBody String json);
+	PageInfo<JournalDetailVo> getJournalDetailByCheck(@RequestBody String json);
 }

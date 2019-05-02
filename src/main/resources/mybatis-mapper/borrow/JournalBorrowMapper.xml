@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="cn.edu.imut.jm.journal.domain.borrow.dao.JournalBorrowDao">
+	<resultMap id="BorrowMap"
+		type="cn.edu.imut.jm.journal.domain.borrow.entity.Borrow">
+		<id column="borrow_id" property="borrowId" jdbcType="INTEGER" />
+		<result column="borrow_time" property="borrowTime"
+			jdbcType="TIMESTAMP" />
+		<result column="return_time" property="returnTime"
+			jdbcType="TIMESTAMP" />
+		<result column="reality_days" property="realityDays"
+			jdbcType="INTEGER" />
+		<result column="is_overdue" property="isOverdue"
+			jdbcType="TINYINT" />
+		<result column="overdue_days" property="overdueDays"
+			jdbcType="INTEGER" />
+		<result column="penalty" property="penalty" jdbcType="DECIMAL" />
+		<result column="is_payment" property="isPayment"
+			jdbcType="TINYINT" />
+		<result column="is_delete" property="isDelete"
+			jdbcType="TINYINT" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="journal_id" property="journalId"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap
+		type="cn.edu.imut.jm.journal.domain.borrow.valobj.BorrowVo"
+		id="BorrowVoMap" extends="BorrowMap">
+		<association property="journalDetailVo"
+			column="journal_id"
+			javaType="cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo"
+			select="selectJournal"></association>
+	</resultMap>
+	<sql id="Borrow_Column_List">
+		borrow_id, borrow_time, return_time, reality_days, is_overdue, overdue_days,
+		penalty,
+		is_payment, is_delete, user_id, journal_id
+	</sql>
+	<select id="selectByUserId" resultMap="BorrowMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Borrow_Column_List" />
+		from borrow
+		where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+	<select id="selectJournal" parameterType="int">
+		select journal_id, journal_name, journal_img, reel_number, issue,
+		total_issue, CN, ISBN, ISSN,
+		publishing_house,
+		journal_host from
+		journal_details where journal_id=#{journalId,jdbcType=INTEGER}
+	</select>
+	<!--创建借阅记录 -->
+	<insert id="insertBorrow"
+		parameterType="cn.edu.imut.jm.journal.domain.borrow.entity.Borrow">
+		insert into borrow
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="borrowId != null">
+				borrow_id,
+			</if>
+			<if test="borrowTime != null">
+				borrow_time,
+			</if>
+			<if test="returnTime != null">
+				return_time,
+			</if>
+			<if test="realityDays != null">
+				reality_days,
+			</if>
+			<if test="isOverdue != null">
+				is_overdue,
+			</if>
+			<if test="overdueDays != null">
+				overdue_days,
+			</if>
+			<if test="penalty != null">
+				penalty,
+			</if>
+			<if test="isPayment != null">
+				is_payment,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="journalId != null">
+				journal_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="borrowId != null">
+				#{borrowId,jdbcType=INTEGER},
+			</if>
+			<if test="borrowTime != null">
+				#{borrowTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="returnTime != null">
+				#{returnTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="realityDays != null">
+				#{realityDays,jdbcType=INTEGER},
+			</if>
+			<if test="isOverdue != null">
+				#{isOverdue,jdbcType=TINYINT},
+			</if>
+			<if test="overdueDays != null">
+				#{overdueDays,jdbcType=INTEGER},
+			</if>
+			<if test="penalty != null">
+				#{penalty,jdbcType=DECIMAL},
+			</if>
+			<if test="isPayment != null">
+				#{isPayment,jdbcType=TINYINT},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=TINYINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="journalId != null">
+				#{journalId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+</mapper>

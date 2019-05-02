@@ -45,5 +45,6 @@ public interface JournalDetailDao {
 //	前端请求
 	List<JournalDetailVo> getJournalDetails();
 
-	List<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue);
+	List<JournalDetailVo> getJournalDetailByCheck(@Param("checkValue") CheckValue checkValue,
+			@Param("dateSort") Integer dateSort);
 }

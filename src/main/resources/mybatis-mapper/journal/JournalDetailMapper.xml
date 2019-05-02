@@ -523,7 +523,7 @@
 	<select id="getJournalDetails" resultMap="JournalDetailVoMap">
 		select
 		<include refid="JournalDetails_Column_List" />
-		from journal_details
+		from journal_details where is_delete=0
 		order by journal_join_time desc limit 8
 	</select>
 
@@ -534,24 +534,31 @@
 		<include refid="JournalDetails_Column_List" />
 		from journal_details
 		<where>
-			<if test="type!=null">
-				and type_id=#{type,jdbcType=INTEGER}
+			is_delete=0
+			<if test="checkValue.type!=null">
+				and type_id=#{checkValue.type,jdbcType=INTEGER}
 			</if>
-			<if test="level!=null">
-				and journal_level=#{level,jdbcType=INTEGER}
+			<if test="checkValue.level!=null">
+				and journal_level=#{checkValue.level,jdbcType=INTEGER}
 			</if>
-			<if test="area!=null">
-				and journal_level=#{area,jdbcType=INTEGER}
+			<if test="checkValue.area!=null and area!=666">
+				and publishing_area=#{checkValue.area,jdbcType=INTEGER}
 			</if>
-			<if test="cycle!=null">
-				and publication_cycle=#{cycle,jdbcType=INTEGER}
+			<if test="checkValue.area!=null and checkValue.area==666">
+				and is_foreign=1
 			</if>
-			<if test="startTime!=null">
-				and publish_time &lt; #{startTime,jdbcType=INTEGER}
+			<if test="checkValue.cycle!=null">
+				and publication_cycle=#{checkValue.cycle,jdbcType=INTEGER}
 			</if>
-			<if test="endTime!=null">
-				and publish_time &gt; #{endTime,jdbcType=INTEGER}
+			<if test="checkValue.startTime!=null">
+				and publish_time &lt; #{checkValue.startTime,jdbcType=INTEGER}
+			</if>
+			<if test="checkValue.endTime!=null">
+				and publish_time &gt; #{checkValue.endTime,jdbcType=INTEGER}
 			</if>
 		</where>
+		<if test="dateSort=='1'.toString()">
+		order by publish_time desc
+		</if>
 	</select>
 </mapper>

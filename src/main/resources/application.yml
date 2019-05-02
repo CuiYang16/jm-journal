@@ -12,3 +12,6 @@ spring:
   application:
     #当前应用名称
     name: jm-journal
+logging:
+  level:
+     cn.edu.imut.jm.journal.domain.journal.dao.JournalDetailDao : debug

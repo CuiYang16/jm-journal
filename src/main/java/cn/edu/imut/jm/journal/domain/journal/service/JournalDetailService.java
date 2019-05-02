@@ -43,5 +43,6 @@ public interface JournalDetailService {
 //	前端请求
 	List<JournalDetailVo> getJournalDetails();
 
-	List<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue);
+	PageInfo<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue, Integer currentPage, Integer pageSize,
+			Integer dateSort);
 }

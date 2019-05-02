@@ -95,6 +95,7 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer delImgs(Integer journalId) {
 		if (journalId != null && journalId != 0) {
 			return journalDetailDao.delImgs(journalId);
@@ -104,6 +105,7 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 
 	@Override
 //	假删除
+	@Transactional(rollbackFor = Exception.class)
 	public Integer delJournalDetail(Integer journalId) {
 		if (journalId != null && journalId != 0) {
 			return journalDetailDao.updateJournalDetailDel(journalId);
@@ -113,6 +115,7 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 
 //假删
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer updateMultipleJournalDetailDel(List<Integer> ids) {
 		if (ids != null && ids.size() > 0) {
 			return journalDetailDao.updateMultipleJournalDetailDel(ids);
@@ -122,6 +125,7 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 
 //真删
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer deleteJournal(Integer journalId) {
 		if (journalId != null && journalId != 0) {
 			return journalDetailDao.deleteJournal(journalId);
@@ -131,6 +135,7 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 
 	// 真删
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer deleteMultipleJournal(List<Integer> ids) {
 		if (ids != null && ids.size() > 0) {
 			return journalDetailDao.deleteMultipleJournal(ids);
@@ -152,7 +157,8 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 	}
 
 	@Override
-	public List<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue) {
+	public PageInfo<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue, Integer currentPage,
+			Integer pageSize, Integer dateSort) {
 		if (checkValue != null) {
 			if (checkValue.getTime() != null) {
 				Calendar cl = Calendar.getInstance();
@@ -193,9 +199,13 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 					break;
 				}
 			}
+			PageHelper.startPage(currentPage, pageSize);
+			List<JournalDetailVo> journalDetailByCheck = journalDetailDao.getJournalDetailByCheck(checkValue, dateSort);
+			PageInfo<JournalDetailVo> pageInfo = new PageInfo<JournalDetailVo>(journalDetailByCheck);
+			pageInfo.setPageNum(currentPage);
+			pageInfo.setPageSize(pageSize);
 
-			System.out.println(checkValue.toString());
-			return journalDetailDao.getJournalDetailByCheck(checkValue);
+			return pageInfo;
 		}
 		return null;
 	}
