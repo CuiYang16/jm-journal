@@ -43,6 +43,8 @@
 		<result column="format" property="format" jdbcType="INTEGER" />
 		<result column="page_number" property="pageNumber"
 			jdbcType="INTEGER" />
+			<result column="inventory" property="inventory"
+			jdbcType="INTEGER" />
 		<result column="is_borrow" property="isBorrow"
 			jdbcType="TINYINT" />
 		<result column="price" property="price" jdbcType="DECIMAL" />
@@ -74,7 +76,7 @@
 		domestic_code, format, page_number, is_borrow, price,
 		description, is_delete,
 		type_id,
-		journal_type
+		journal_type,inventory
 	</sql>
 	<select id="selectJournalDetails" resultMap="JournalDetailVoMap">
 		select
@@ -96,7 +98,7 @@
 		<include refid="JournalDetails_Column_List" />
 		from journal_details
 		<where>
-			is_delete=0 and is_borrow=1
+			is_delete=0 and is_borrow=1 and inventory &gt; 0
 		</where>
 		order by journal_id desc
 	</select>
@@ -281,6 +283,9 @@
 			<if test="pageNumber != null">
 				page_number,
 			</if>
+			<if test="inventory != null">
+				inventory,
+			</if>
 			<if test="isBorrow != null">
 				is_borrow,
 			</if>
@@ -369,6 +374,9 @@
 			</if>
 			<if test="pageNumber != null">
 				#{pageNumber,jdbcType=INTEGER},
+			</if>
+			<if test="inventory != null">
+				#{inventory,jdbcType=INTEGER},
 			</if>
 			<if test="isBorrow != null">
 				#{isBorrow,jdbcType=TINYINT},
@@ -462,6 +470,9 @@
 			<if test="pageNumber != null">
 				page_number = #{pageNumber,jdbcType=INTEGER},
 			</if>
+			<if test="inventory != null">
+				inventory = #{inventory,jdbcType=INTEGER},
+			</if>
 			<if test="isBorrow != null">
 				is_borrow = #{isBorrow,jdbcType=TINYINT},
 			</if>
@@ -523,7 +534,7 @@
 	<select id="getJournalDetails" resultMap="JournalDetailVoMap">
 		select
 		<include refid="JournalDetails_Column_List" />
-		from journal_details where is_delete=0
+		from journal_details where is_delete=0 and inventory &gt; 0 and is_borrow =1
 		order by journal_join_time desc limit 8
 	</select>
 
@@ -534,7 +545,7 @@
 		<include refid="JournalDetails_Column_List" />
 		from journal_details
 		<where>
-			is_delete=0
+			is_delete=0 and inventory &gt; 0 and is_borrow =1
 			<if test="checkValue.type!=null">
 				and type_id=#{checkValue.type,jdbcType=INTEGER}
 			</if>

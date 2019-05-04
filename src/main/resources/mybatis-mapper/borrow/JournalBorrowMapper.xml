@@ -9,6 +9,8 @@
 			jdbcType="DATE" />
 		<result column="return_time" property="returnTime"
 			jdbcType="DATE" />
+		<result column="reality_return" property="realityReturn"
+			jdbcType="DATE" />
 		<result column="reality_days" property="realityDays"
 			jdbcType="INTEGER" />
 		<result column="is_overdue" property="isOverdue"
@@ -24,76 +26,285 @@
 		<result column="journal_id" property="journalId"
 			jdbcType="INTEGER" />
 	</resultMap>
+
 	<resultMap
 		type="cn.edu.imut.jm.journal.domain.borrow.valobj.BorrowVo"
 		id="BorrowVoMap" extends="BorrowMap">
-		<association property="journalDetails"
-			column="journal_id"
+		<association property="journalDetails" column="journal_id"
 			javaType="cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails"
 			select="selectJournal"></association>
 	</resultMap>
-	<sql id="Borrow_Column_List">
-		borrow_id, borrow_time, return_time, reality_days, is_overdue, overdue_days,
-		penalty,
-		is_payment, is_delete, user_id, journal_id
-	</sql>
-	<select id="selectByUserId" resultMap="BorrowVoMap">
-		select
-		<include refid="Borrow_Column_List" />
-		from borrow
-		<where>
-			user_id = #{userId,jdbcType=INTEGER} 
-			<if test="isOverdue=='1'.toString()">
-			and return_time &lt;= NOW()
-			</if>
-			<if test="isOverdue=='0'.toString()">
-			and return_time &gt; NOW()
-			</if>
-			<if test="isPayment=='1'.toString()">
-			and is_payment =1
-			</if>
-			<if test="isPayment=='0'.toString()">
-			and is_payment =0
-			</if>
-		</where>
 
-	</select>
-	 <resultMap id="JournalDetailsMap" type="cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails" >
-    <id column="journal_id" property="journalId" jdbcType="INTEGER" />
-    <result column="journal_name" property="journalName" jdbcType="VARCHAR" />
-    <result column="journal_img" property="journalImg" jdbcType="VARCHAR" />
-    <result column="author" property="author" jdbcType="VARCHAR" />
-    <result column="journal_level" property="journalLevel" jdbcType="INTEGER" />
-    <result column="journal_join_time" property="journalJoinTime" jdbcType="DATE" />
-    <result column="publish_time" property="publishTime" jdbcType="DATE" />
-    <result column="reel_number" property="reelNumber" jdbcType="INTEGER" />
-    <result column="issue" property="issue" jdbcType="VARCHAR" />
-    <result column="total_issue" property="totalIssue" jdbcType="INTEGER" />
-    <result column="CN" property="cn" jdbcType="VARCHAR" />
-    <result column="ISBN" property="isbn" jdbcType="VARCHAR" />
-    <result column="ISSN" property="issn" jdbcType="VARCHAR" />
-    <result column="publication_cycle" property="publicationCycle" jdbcType="INTEGER" />
-    <result column="publishing_house" property="publishingHouse" jdbcType="VARCHAR" />
-    <result column="journal_host" property="journalHost" jdbcType="VARCHAR" />
-    <result column="is_foreign" property="isForeign" jdbcType="BIT" />
-    <result column="publishing_area" property="publishingArea" jdbcType="INTEGER" />
-    <result column="jounal_language" property="jounalLanguage" jdbcType="INTEGER" />
-    <result column="foreign_codes" property="foreignCodes" jdbcType="VARCHAR" />
-    <result column="domestic_code" property="domesticCode" jdbcType="VARCHAR" />
-    <result column="format" property="format" jdbcType="INTEGER" />
-    <result column="page_number" property="pageNumber" jdbcType="INTEGER" />
-    <result column="is_borrow" property="isBorrow" jdbcType="BIT" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="is_delete" property="isDelete" jdbcType="BIT" />
-    <result column="type_id" property="typeId" jdbcType="INTEGER" />
-    <result column="journal_type" property="journalType" jdbcType="VARCHAR" />
-  </resultMap>
-	<select id="selectJournal" parameterType="int" resultMap="JournalDetailsMap">
+	<resultMap
+		type="cn.edu.imut.jm.journal.domain.borrow.valobj.BorrowManageVo"
+		id="BorrowManageVoMap" extends="BorrowMap">
+		<association property="journalDetails" column="journal_id"
+			javaType="cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails"
+			select="selectJournal"></association>
+		<association property="user" column="user_id"
+			javaType="cn.edu.imut.jm.journal.domain.borrow.valobj.User"
+			select="selectUser"></association>
+	</resultMap>
+	<sql id="Borrow_Column_List">
+		borrow_id, borrow_time, return_time, reality_days,
+		is_overdue, overdue_days,
+		penalty,
+		is_payment, is_delete, user_id,
+		journal_id,reality_return
+	</sql>
+
+	<resultMap id="JournalDetailsMap"
+		type="cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails">
+		<id column="journal_id" property="journalId" jdbcType="INTEGER" />
+		<result column="journal_name" property="journalName"
+			jdbcType="VARCHAR" />
+		<result column="journal_img" property="journalImg"
+			jdbcType="VARCHAR" />
+		<result column="author" property="author" jdbcType="VARCHAR" />
+		<result column="journal_level" property="journalLevel"
+			jdbcType="INTEGER" />
+		<result column="journal_join_time" property="journalJoinTime"
+			jdbcType="DATE" />
+		<result column="publish_time" property="publishTime"
+			jdbcType="DATE" />
+		<result column="reel_number" property="reelNumber"
+			jdbcType="INTEGER" />
+		<result column="issue" property="issue" jdbcType="VARCHAR" />
+		<result column="total_issue" property="totalIssue"
+			jdbcType="INTEGER" />
+		<result column="CN" property="cn" jdbcType="VARCHAR" />
+		<result column="ISBN" property="isbn" jdbcType="VARCHAR" />
+		<result column="ISSN" property="issn" jdbcType="VARCHAR" />
+		<result column="publication_cycle" property="publicationCycle"
+			jdbcType="INTEGER" />
+		<result column="publishing_house" property="publishingHouse"
+			jdbcType="VARCHAR" />
+		<result column="journal_host" property="journalHost"
+			jdbcType="VARCHAR" />
+		<result column="is_foreign" property="isForeign"
+			jdbcType="TINYINT" />
+		<result column="publishing_area" property="publishingArea"
+			jdbcType="INTEGER" />
+		<result column="jounal_language" property="jounalLanguage"
+			jdbcType="INTEGER" />
+		<result column="foreign_codes" property="foreignCodes"
+			jdbcType="VARCHAR" />
+		<result column="domestic_code" property="domesticCode"
+			jdbcType="VARCHAR" />
+		<result column="format" property="format" jdbcType="INTEGER" />
+		<result column="page_number" property="pageNumber"
+			jdbcType="INTEGER" />
+		<result column="is_borrow" property="isBorrow"
+			jdbcType="TINYINT" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+		<result column="is_delete" property="isDelete"
+			jdbcType="TINYINT" />
+		<result column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="journal_type" property="journalType"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="selectJournal" parameterType="int"
+		resultMap="JournalDetailsMap">
 		select journal_id, journal_name, journal_img, issue,
 		total_issue, CN, ISBN, ISSN,
 		publishing_house,
 		journal_host from
 		journal_details where journal_id=#{journalId,jdbcType=INTEGER}
+	</select>
+
+	<resultMap id="UserMap"
+		type="cn.edu.imut.jm.journal.domain.borrow.valobj.User">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="user_name" property="userName"
+			jdbcType="VARCHAR" />
+		<result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+		<result column="user_phone" property="userPhone"
+			jdbcType="VARCHAR" />
+		<result column="user_email" property="userEmail"
+			jdbcType="VARCHAR" />
+		<result column="user_sex" property="userSex" jdbcType="TINYINT" />
+		<result column="user_head_portrait" property="userHeadPortrait"
+			jdbcType="VARCHAR" />
+		<result column="last_login_time" property="lastLoginTime"
+			jdbcType="TIMESTAMP" />
+		<result column="is_delete" property="isDelete"
+			jdbcType="TINYINT" />
+	</resultMap>
+	<select id="selectUser" resultMap="UserMap" parameterType="int">
+		select user_name,user_phone,user_email from user where user_id
+		=#{userId,jdbcType=INTEGER}
+	</select>
+
+	<!-- 查询所有借阅 -->
+	<select id="selectBorrows" resultMap="BorrowManageVoMap">
+		select
+		<include refid="Borrow_Column_List" />
+		from borrow
+		<where>
+
+			<if test="userId!=0">
+				and user_id=#{userId,jdbcType=INTEGER}
+			</if>
+			<if test="isOverdue=='1'.toString()">
+				and (return_time &lt; NOW() or is_overdue
+				=#{isOverdue,jdbcType=INTEGER})
+			</if>
+
+			<if test="isPayment!=2">
+				and is_payment =#{isPayment,jdbcType=INTEGER} and NOT
+				ISNULL(reality_return) and penalty &gt; 0
+			</if>
+			<if test="isOverdue=='0'.toString()">
+				and (return_time &gt;= NOW() or is_overdue
+				=#{isOverdue,jdbcType=INTEGER})
+			</if>
+		</where>
+		order by borrow_time desc
+	</select>
+
+	<!-- 查询所有激活用户 -->
+	<select id="selectAllUser" resultMap="UserMap">
+		select
+		user_id,user_name,is_delete
+		from user
+	</select>
+
+	<!-- 查询所有杂志 -->
+	<select id="selectJournals" resultMap="JournalDetailsMap">
+		select
+		journal_id,journal_name,inventory,is_borrow,is_delete
+		from
+		journal_details
+
+	</select>
+	<!--归还 -->
+	<update id="updateReturnBorrow"
+		parameterType="cn.edu.imut.jm.journal.domain.borrow.entity.Borrow">
+		update borrow
+		<set>
+			<if test="borrowTime != null">
+				borrow_time = #{borrowTime,jdbcType=DATE},
+			</if>
+			<if test="returnTime != null">
+				return_time = #{returnTime,jdbcType=DATE},
+			</if>
+			<if test="realityReturn != null">
+				reality_return = #{realityReturn,jdbcType=DATE},
+			</if>
+			<if test="realityDays != null">
+				reality_days = #{realityDays,jdbcType=INTEGER},
+			</if>
+			<if test="isOverdue != null">
+				is_overdue = #{isOverdue,jdbcType=TINYINT},
+			</if>
+			<if test="overdueDays != null">
+				overdue_days = #{overdueDays,jdbcType=INTEGER},
+			</if>
+			<if test="penalty != null">
+				penalty = #{penalty,jdbcType=DECIMAL},
+			</if>
+			<if test="isPayment != null">
+				is_payment = #{isPayment,jdbcType=TINYINT},
+			</if>
+			<if test="isDelete != null">
+				is_delete = #{isDelete,jdbcType=TINYINT},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="journalId != null">
+				journal_id = #{journalId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where borrow_id = #{borrowId,jdbcType=INTEGER}
+	</update>
+
+	<!--缴纳罚金 -->
+	<update id="updateIsPayment" parameterType="int">
+		update borrow
+		<set>
+			is_payment = 1,
+		</set>
+		where borrow_id = #{borrowId,jdbcType=INTEGER}
+	</update>
+
+	<!--查询逾期记录 -->
+	<select id="selecrtOverdue" parameterType="int"
+		resultMap="BorrowMap">
+		select
+		<include refid="Borrow_Column_List" />
+		from borrow where is_overdue=1 and penalty &gt; 0 and is_payment=0 and
+		user_id = #{userId,jdbcType=INTEGER} limit 1
+	</select>
+	<!--查询在借记录 -->
+	<select id="selectNotReturn" parameterType="int"
+		resultMap="BorrowMap">
+		SELECT
+		<include refid="Borrow_Column_List" />
+		FROM borrow where ISNULL(reality_return) and
+		user_id=#{userId,jdbcType=INTEGER} limit 10
+	</select>
+	
+	<!-- 改变删除状态 -->
+	<update id="updateBorrowDel" parameterType="int">
+		update borrow
+		<set>
+			is_delete = 1,
+		</set>
+		where borrow_id = #{borrowId,jdbcType=INTEGER}
+	</update>
+	<!-- 彻底删除数据 -->
+	<delete id="deleteBorrow" parameterType="java.lang.Integer">
+		delete from
+		borrow
+		where borrow_id =
+		#{borrowId,jdbcType=INTEGER}
+	</delete>
+	<!--批量改变删除状态 -->
+	<update id="updateMultipleBorrowDel"
+		parameterType="java.util.List">
+		update borrow
+		<set>
+			is_delete = 1,
+		</set>
+		where borrow_id in
+		<foreach collection="list" item="borrowId"
+			index="index" open="(" close=")" separator=",">
+			#{borrowId,jdbcType=INTEGER}
+		</foreach>
+	</update>
+	<!--批量 彻底删除 -->
+	<delete id="deleteMultipleBorrow"
+		parameterType="java.util.List">
+		delete from borrow
+		where borrow_id in
+		<foreach collection="list" item="borrowId"
+			index="index" open="(" close=")" separator=",">
+			#{borrowId,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+	
+	<!-- 前端请求 -->
+	<select id="selectByUserId" resultMap="BorrowVoMap">
+		select
+		<include refid="Borrow_Column_List" />
+		from borrow
+		<where>
+			user_id = #{userId,jdbcType=INTEGER} and is_delete=0
+			<if test="isOverdue=='1'.toString()">
+				and return_time &lt; NOW()
+			</if>
+			<if test="isOverdue=='0'.toString()">
+				and return_time &gt;= NOW()
+			</if>
+			<if test="isPayment=='1'.toString()">
+				and is_payment =1
+			</if>
+			<if test="isPayment=='0'.toString()">
+				and is_payment =0
+			</if>
+		</where>
+		order by borrow_time desc
 	</select>
 	<!--创建借阅记录 -->
 	<insert id="insertBorrow"
@@ -108,6 +319,9 @@
 			</if>
 			<if test="returnTime != null">
 				return_time,
+			</if>
+			<if test="realityReturn != null">
+				reality_return,
 			</if>
 			<if test="realityDays != null">
 				reality_days,
@@ -144,6 +358,9 @@
 			<if test="returnTime != null">
 				#{returnTime,jdbcType=DATE},
 			</if>
+			<if test="realityReturn != null">
+				#{realityReturn,jdbcType=DATE},
+			</if>
 			<if test="realityDays != null">
 				#{realityDays,jdbcType=INTEGER},
 			</if>
@@ -170,4 +387,14 @@
 			</if>
 		</trim>
 	</insert>
+	<!--库存数量减一 -->
+	<update id="updateInventory" parameterType="int">
+		update
+		journal_details
+		set inventory = inventory-1
+		where journal_id =
+		#{journalId,jdbcType=INTEGER}
+	</update>
+
+
 </mapper>

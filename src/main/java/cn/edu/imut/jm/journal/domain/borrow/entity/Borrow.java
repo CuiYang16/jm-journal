@@ -17,9 +17,14 @@ public class Borrow {
     private Date borrowTime;
 
     /**
-     * 归还时间
+     * 应归还时间
      */
     private Date returnTime;
+
+    /**
+     * 实际归还实际
+     */
+    private Date realityReturn;
 
     /**
      * 实际借阅天数
@@ -83,6 +88,14 @@ public class Borrow {
 
     public void setReturnTime(Date returnTime) {
         this.returnTime = returnTime;
+    }
+
+    public Date getRealityReturn() {
+        return realityReturn;
+    }
+
+    public void setRealityReturn(Date realityReturn) {
+        this.realityReturn = realityReturn;
     }
 
     public Integer getRealityDays() {

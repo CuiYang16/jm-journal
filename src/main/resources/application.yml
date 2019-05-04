@@ -14,4 +14,4 @@ spring:
     name: jm-journal
 logging:
   level:
-     cn.edu.imut.jm.journal.domain.journal.dao.JournalDetailDao : debug
+     cn.edu.imut.jm.journal.domain.borrow.dao.JournalBorrowDao : debug
