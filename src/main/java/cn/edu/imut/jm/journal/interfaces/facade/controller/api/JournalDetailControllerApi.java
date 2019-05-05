@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 
 import cn.edu.imut.infrastructrue.util.ResponseVo;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
+import cn.edu.imut.jm.journal.domain.journal.valobj.JournalBorrowVo;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 
 @RequestMapping("/journal-detail")
@@ -71,4 +72,12 @@ public interface JournalDetailControllerApi {
 
 	@RequestMapping(value = "/get/check-journal", method = { RequestMethod.POST, RequestMethod.GET })
 	PageInfo<JournalDetailVo> getJournalDetailByCheck(@RequestBody String json);
+
+	@RequestMapping(value = "/get/search-journal", method = { RequestMethod.GET })
+	PageInfo<JournalDetailVo> getJournalDetailBySearch(@RequestParam("currentPage") Integer currentPage,
+			@RequestParam("pageSize") Integer pageSize, @RequestParam("searchValue") String searchValue,
+			@RequestParam("dateSort") Integer dateSort);
+
+	@RequestMapping(value = "/get/journal-borrow", method = { RequestMethod.GET })
+	List<JournalBorrowVo> getBorrowList();
 }

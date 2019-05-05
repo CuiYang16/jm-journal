@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -15,6 +16,7 @@ import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
 import cn.edu.imut.jm.journal.domain.journal.service.JournalDetailService;
 import cn.edu.imut.jm.journal.domain.journal.valobj.CheckValue;
+import cn.edu.imut.jm.journal.domain.journal.valobj.JournalBorrowVo;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 
 @Service
@@ -199,6 +201,9 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 					break;
 				}
 			}
+//			String searchType = StringUtils.subString(searchValue, null, "-*-");
+//			String typeValue = StringUtils.subString(searchValue, "-*-", null);
+
 			PageHelper.startPage(currentPage, pageSize);
 			List<JournalDetailVo> journalDetailByCheck = journalDetailDao.getJournalDetailByCheck(checkValue, dateSort);
 			PageInfo<JournalDetailVo> pageInfo = new PageInfo<JournalDetailVo>(journalDetailByCheck);
@@ -210,4 +215,22 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 		return null;
 	}
 
+	@Override
+	public PageInfo<JournalDetailVo> getJournalDetailBySearch(Integer currentPage, Integer pageSize, String searchValue,
+			Integer dateSort) {
+		String searchType = StringUtils.subString(searchValue, null, "-*-");
+		String typeValue = StringUtils.subString(searchValue, "-*-", null);
+		PageHelper.startPage(currentPage, pageSize);
+		List<JournalDetailVo> journalDetailByCheck = journalDetailDao.getJournalDetailBySearch(searchType, typeValue,
+				dateSort);
+		PageInfo<JournalDetailVo> pageInfo = new PageInfo<JournalDetailVo>(journalDetailByCheck);
+		pageInfo.setPageNum(currentPage);
+		pageInfo.setPageSize(pageSize);
+		return pageInfo;
+	}
+
+	@Override
+	public List<JournalBorrowVo> getBorrowList() {
+		return journalDetailDao.getBorrowList();
+	};
 }

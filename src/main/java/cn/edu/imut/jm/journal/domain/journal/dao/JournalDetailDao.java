@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
 import cn.edu.imut.jm.journal.domain.journal.valobj.CheckValue;
+import cn.edu.imut.jm.journal.domain.journal.valobj.JournalBorrowVo;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 
 @Mapper
@@ -47,4 +48,9 @@ public interface JournalDetailDao {
 
 	List<JournalDetailVo> getJournalDetailByCheck(@Param("checkValue") CheckValue checkValue,
 			@Param("dateSort") Integer dateSort);
+
+	List<JournalDetailVo> getJournalDetailBySearch(@Param("searchType") String searchType,
+			@Param("typeValue") String typeValue, @Param("dateSort") Integer dateSort);
+
+	List<JournalBorrowVo> getBorrowList();
 }

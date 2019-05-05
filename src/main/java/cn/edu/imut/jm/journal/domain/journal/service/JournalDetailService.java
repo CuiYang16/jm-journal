@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
 import cn.edu.imut.jm.journal.domain.journal.valobj.CheckValue;
+import cn.edu.imut.jm.journal.domain.journal.valobj.JournalBorrowVo;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 
 public interface JournalDetailService {
@@ -45,4 +46,9 @@ public interface JournalDetailService {
 
 	PageInfo<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue, Integer currentPage, Integer pageSize,
 			Integer dateSort);
+
+	PageInfo<JournalDetailVo> getJournalDetailBySearch(Integer currentPage, Integer pageSize, String searchValue,
+			Integer dateSort);
+
+	List<JournalBorrowVo> getBorrowList();
 }

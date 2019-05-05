@@ -43,7 +43,7 @@
 		<result column="format" property="format" jdbcType="INTEGER" />
 		<result column="page_number" property="pageNumber"
 			jdbcType="INTEGER" />
-			<result column="inventory" property="inventory"
+		<result column="inventory" property="inventory"
 			jdbcType="INTEGER" />
 		<result column="is_borrow" property="isBorrow"
 			jdbcType="TINYINT" />
@@ -534,7 +534,8 @@
 	<select id="getJournalDetails" resultMap="JournalDetailVoMap">
 		select
 		<include refid="JournalDetails_Column_List" />
-		from journal_details where is_delete=0 and inventory &gt; 0 and is_borrow =1
+		from journal_details where is_delete=0 and inventory &gt; 0 and
+		is_borrow =1
 		order by journal_join_time desc limit 8
 	</select>
 
@@ -559,17 +560,76 @@
 				and is_foreign=1
 			</if>
 			<if test="checkValue.cycle!=null">
-				and publication_cycle=#{checkValue.cycle,jdbcType=INTEGER}
+				and
+				publication_cycle=#{checkValue.cycle,jdbcType=INTEGER}
 			</if>
 			<if test="checkValue.startTime!=null">
-				and publish_time &lt; #{checkValue.startTime,jdbcType=INTEGER}
+				and publish_time &lt;
+				#{checkValue.startTime,jdbcType=INTEGER}
 			</if>
 			<if test="checkValue.endTime!=null">
-				and publish_time &gt; #{checkValue.endTime,jdbcType=INTEGER}
+				and publish_time &gt;
+				#{checkValue.endTime,jdbcType=INTEGER}
 			</if>
+
 		</where>
 		<if test="dateSort=='1'.toString()">
-		order by publish_time desc
+			order by publish_time desc
 		</if>
+	</select>
+
+	<select id="getJournalDetailBySearch"
+		resultMap="JournalDetailVoMap">
+		select
+		<include refid="JournalDetails_Column_List" />
+		from journal_details
+		<where>
+			is_delete=0 and inventory &gt; 0 and is_borrow =1
+			<if test="searchType=='1'.toString">
+				and journal_name LIKE CONCAT('%',#{typeValue},'%')
+			</if>
+			<if test="searchType=='2'.toString">
+				and CN like CONCAT('%',#{typeValue},'%')
+			</if>
+			<if test="searchType=='3'.toString">
+				and journal_host LIKE CONCAT('%',#{typeValue},'%')
+			</if>
+
+		</where>
+		<if test="dateSort=='1'.toString()">
+			order by publish_time desc
+		</if>
+	</select>
+
+	<resultMap
+		type="cn.edu.imut.jm.journal.domain.journal.valobj.JournalBorrowVo"
+		id="JournalBorrowVoMap" extends="JournalDetailVoMap">
+		<result column="total" property="total" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="getBorrowList" resultMap="JournalBorrowVoMap">
+		SELECT
+		j.journal_id, j.journal_name, j.journal_img,
+		j.author,
+		j.journal_level,
+		j.journal_join_time,
+		j.publish_time,
+		j.reel_number, j.issue,
+		j.total_issue, j.CN, j.ISBN, j.ISSN,
+		j.publication_cycle,
+		j.publishing_house,
+		j.journal_host, is_foreign,
+		publishing_area,
+		jounal_language,
+		j.foreign_codes,
+		j.domestic_code,
+		format, page_number,
+		is_borrow, price,
+		j.description, j.is_delete,
+		j.type_id,
+		j.journal_type,j.inventory,count(j.journal_id) as total
+		FROM
+		journal_details as j inner JOIN borrow as b on
+		b.journal_id=j.journal_id and j.inventory &gt; 0 GROUP BY b.journal_id ORDER BY
+		COUNT(b.journal_id) desc limit 18
 	</select>
 </mapper>

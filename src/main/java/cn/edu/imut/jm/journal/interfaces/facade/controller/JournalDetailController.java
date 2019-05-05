@@ -19,6 +19,7 @@ import cn.edu.imut.jm.journal.domain.journal.entity.JournalDetails;
 import cn.edu.imut.jm.journal.domain.journal.entity.JournalImages;
 import cn.edu.imut.jm.journal.domain.journal.service.JournalDetailService;
 import cn.edu.imut.jm.journal.domain.journal.valobj.CheckValue;
+import cn.edu.imut.jm.journal.domain.journal.valobj.JournalBorrowVo;
 import cn.edu.imut.jm.journal.domain.journal.valobj.JournalDetailVo;
 import cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi;
 
@@ -202,6 +203,20 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		Integer pageSize = JSON.parseObject(json).getInteger("pageSize");
 		Integer dateSort = JSON.parseObject(json).getInteger("dateSort");
 		return journalDetailService.getJournalDetailByCheck(checkValue, currentPage, pageSize, dateSort);
+	}
+
+	@Override
+	public PageInfo<JournalDetailVo> getJournalDetailBySearch(@RequestParam("currentPage") Integer currentPage,
+			@RequestParam("pageSize") Integer pageSize, @RequestParam("searchValue") String searchValue,
+			@RequestParam("dateSort") Integer dateSort) {
+
+		return journalDetailService.getJournalDetailBySearch(currentPage, pageSize, searchValue, dateSort);
+	}
+
+	@Override
+	public List<JournalBorrowVo> getBorrowList() {
+
+		return journalDetailService.getBorrowList();
 	}
 
 }
