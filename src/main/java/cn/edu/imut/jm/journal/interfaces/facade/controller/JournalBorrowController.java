@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 
+import cn.edu.imut.infrastructrue.util.JwtTokenUtil;
 import cn.edu.imut.infrastructrue.util.ResponseVo;
 import cn.edu.imut.jm.journal.domain.borrow.entity.Borrow;
 import cn.edu.imut.jm.journal.domain.borrow.service.JournalBorrowService;
@@ -94,16 +95,17 @@ public class JournalBorrowController implements JournalBorrowControllerApi {
 //	前端请求
 	@Override
 	public Integer userBorrowJournal(@RequestBody String json) {
-		Integer userId = JSON.parseObject(json).getInteger("userId");
+		String token = JSON.parseObject(json).getString("token");
 		Integer journalId = JSON.parseObject(json).getInteger("journalId");
+		Integer userId = JwtTokenUtil.getUserId(token);
 		return journalBorrowService.insertBorrow(userId, journalId);
 	}
 
 	@Override
-	public PageInfo<BorrowVo> selectByUserId(@RequestParam("userId") Integer userId,
+	public PageInfo<BorrowVo> selectByUserId(@RequestParam("token") String token,
 			@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize,
 			@RequestParam("isOverdue") Integer isOverdue, @RequestParam("isPayment") Integer isPayment) {
-
+		Integer userId = JwtTokenUtil.getUserId(token);
 		return journalBorrowService.selectByUserId(userId, currentPage, pageSize, isOverdue, isPayment);
 	}
 

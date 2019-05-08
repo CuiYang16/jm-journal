@@ -52,7 +52,7 @@ public interface JournalBorrowControllerApi {
 	Integer userBorrowJournal(@RequestBody String json);
 
 	@RequestMapping(value = "/get-borrow", method = RequestMethod.GET)
-	PageInfo<BorrowVo> selectByUserId(@RequestParam("userId") Integer userId,
+	PageInfo<BorrowVo> selectByUserId(@RequestParam("token") String token,
 			@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize,
 			@RequestParam("isOverdue") Integer isOverdue, @RequestParam("isPayment") Integer isPayment);
 
