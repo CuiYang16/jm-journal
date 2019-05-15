@@ -19,12 +19,12 @@ import org.springframework.context.annotation.Configuration;
 
 @EnableFeignClients
 
-@MapperScan("cn.edu.imut.jm.borrow.domain.*.dao.**")
-public class JmBorrowApplication {
+@MapperScan("cn.edu.imut.jm.journal.domain.*.dao.**")
+public class JmJournalApplication {
 
 	public static void main(String[] args) {
-		
-		SpringApplication.run(JmBorrowApplication.class, args);
+
+		SpringApplication.run(JmJournalApplication.class, args);
 	}
 
 }

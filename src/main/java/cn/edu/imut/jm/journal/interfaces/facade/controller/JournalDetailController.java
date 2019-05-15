@@ -26,8 +26,9 @@ import cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailCont
 @RestController
 
 public class JournalDetailController implements JournalDetailControllerApi {
-
 	private static final String JOURNAL_IMG_FILE_PATH = "F:/MyWorkSpace/bishe-vue/journal-door/static/journal-img/";
+	// private static final String JOURNAL_IMG_FILE_PATH =
+	// "C:/Users/Administrator/Desktop/journal-door/static/journal-img/";
 	@Autowired
 	private JournalDetailService journalDetailService;
 
