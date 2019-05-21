@@ -38,6 +38,7 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer insertBackBorrow(Integer userId, Integer journalId) {
 		if (userId != null && journalId != null && userId != 0 && journalId != 0) {
 			Borrow overdue = journalBorrowDao.selecrtOverdue(userId);
@@ -77,6 +78,7 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer updateReturnBorrow(Borrow borrow, Integer isPayment) {
 		borrow.setRealityReturn(new Date());
 		borrow.setRealityDays((int) (new Date().getTime() - borrow.getBorrowTime().getTime()) / (24 * 3600 * 1000));
@@ -92,6 +94,7 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer updateIsPayment(Integer borrowId) {
 		if (borrowId != null && borrowId != null) {
 			return journalBorrowDao.updateIsPayment(borrowId);
@@ -100,6 +103,7 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer updateBorrowDel(Integer borrowId) {
 		if (borrowId != null && borrowId != 0) {
 			return journalBorrowDao.updateBorrowDel(borrowId);
@@ -108,6 +112,7 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer deleteBorrow(Integer borrowId) {
 		if (borrowId != null && borrowId != 0) {
 			return journalBorrowDao.deleteBorrow(borrowId);
@@ -116,6 +121,7 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer updateMultipleBorrowDel(List<Integer> ids) {
 		if (ids != null && ids.size() > 0) {
 			return journalBorrowDao.updateMultipleBorrowDel(ids);
@@ -124,6 +130,7 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Integer deleteMultipleBorrow(List<Integer> ids) {
 		if (ids != null && ids.size() > 0) {
 			return journalBorrowDao.deleteMultipleBorrow(ids);

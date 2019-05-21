@@ -63,10 +63,16 @@ public class JournalTypeServiceImpl implements JournalTypeService {
 
 	@Override
 	public Integer deleteJournalType(List<Integer> ids) {
-		if (ids != null && ids.size() > 0) {
-			return journalTypeDao.deleteJournalType(ids);
+		Integer deleteJournalType = null;
+		try {
+			if (ids != null && ids.size() > 0) {
+				deleteJournalType = journalTypeDao.deleteJournalType(ids);
+			}
+		} catch (Exception e) {
+			return -1;
 		}
-		return null;
+		return deleteJournalType;
+
 	}
 
 	@Override

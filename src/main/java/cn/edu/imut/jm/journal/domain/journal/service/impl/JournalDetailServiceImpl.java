@@ -129,20 +129,33 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Integer deleteJournal(Integer journalId) {
-		if (journalId != null && journalId != 0) {
-			return journalDetailDao.deleteJournal(journalId);
+		Integer deleteJournal = null;
+		try {
+			if (journalId != null && journalId != 0) {
+				deleteJournal = journalDetailDao.deleteJournal(journalId);
+			}
+		} catch (Exception e) {
+			return -1;
 		}
-		return null;
+
+		return deleteJournal;
 	}
 
 	// 真删
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Integer deleteMultipleJournal(List<Integer> ids) {
-		if (ids != null && ids.size() > 0) {
-			return journalDetailDao.deleteMultipleJournal(ids);
+
+		Integer deleteMultipleJournal = null;
+		try {
+			if (ids != null && ids.size() > 0) {
+				deleteMultipleJournal = journalDetailDao.deleteMultipleJournal(ids);
+			}
+		} catch (Exception e) {
+			return -1;
 		}
-		return null;
+
+		return deleteMultipleJournal;
 	}
 
 	@Override
