@@ -47,6 +47,9 @@ public interface JournalBorrowControllerApi {
 	@RequestMapping(value = "/del-borrow-mul", method = RequestMethod.DELETE)
 	ResponseVo deleteMultipleBorrow(@RequestBody String json);
 
+	@RequestMapping(value = "/get-borrow-chart", method = RequestMethod.GET)
+	ResponseVo borrowCount();
+
 //	前端请求
 	@RequestMapping(value = "/borrow-journal", method = RequestMethod.POST)
 	Integer userBorrowJournal(@RequestBody String json);

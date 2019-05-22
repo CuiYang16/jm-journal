@@ -244,7 +244,7 @@
 		FROM borrow where ISNULL(reality_return) and
 		user_id=#{userId,jdbcType=INTEGER} limit 10
 	</select>
-	
+
 	<!-- 改变删除状态 -->
 	<update id="updateBorrowDel" parameterType="int">
 		update borrow
@@ -257,7 +257,8 @@
 	<delete id="deleteBorrow" parameterType="java.lang.Integer">
 		delete from
 		borrow
-		where borrow_id =
+		where
+		borrow_id =
 		#{borrowId,jdbcType=INTEGER}
 	</delete>
 	<!--批量改变删除状态 -->
@@ -268,22 +269,26 @@
 			is_delete = 1,
 		</set>
 		where borrow_id in
-		<foreach collection="list" item="borrowId"
-			index="index" open="(" close=")" separator=",">
+		<foreach collection="list" item="borrowId" index="index"
+			open="(" close=")" separator=",">
 			#{borrowId,jdbcType=INTEGER}
 		</foreach>
 	</update>
 	<!--批量 彻底删除 -->
-	<delete id="deleteMultipleBorrow"
-		parameterType="java.util.List">
+	<delete id="deleteMultipleBorrow" parameterType="java.util.List">
 		delete from borrow
 		where borrow_id in
-		<foreach collection="list" item="borrowId"
-			index="index" open="(" close=")" separator=",">
+		<foreach collection="list" item="borrowId" index="index"
+			open="(" close=")" separator=",">
 			#{borrowId,jdbcType=INTEGER}
 		</foreach>
 	</delete>
-	
+
+	<!-- 总借阅记录数 -->
+	<select id="borrowCount" resultType="int">
+		select count(*) from borrow
+	</select>
+
 	<!-- 前端请求 -->
 	<select id="selectByUserId" resultMap="BorrowVoMap">
 		select

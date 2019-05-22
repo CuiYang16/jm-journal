@@ -41,6 +41,8 @@ public interface JournalDetailService {
 
 	Integer deleteMultipleJournal(List<Integer> ids);
 
+	String journalChart();
+
 //	前端请求
 	List<JournalDetailVo> getJournalDetails();
 

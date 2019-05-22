@@ -164,6 +164,13 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 		return journalDetailDao.selectJournals();
 	}
 
+	@Override
+	public String journalChart() {
+		Integer journalCount = journalDetailDao.journalCount();
+		Integer okJournalCount = journalDetailDao.okJournalCount();
+		return journalCount + "," + okJournalCount;
+	};
+
 //	前端请求
 	@Override
 	public List<JournalDetailVo> getJournalDetails() {
@@ -245,5 +252,6 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 	@Override
 	public List<JournalBorrowVo> getBorrowList() {
 		return journalDetailDao.getBorrowList();
-	};
+	}
+
 }

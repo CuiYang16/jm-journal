@@ -33,6 +33,8 @@ public interface JournalBorrowService {
 
 	Integer deleteMultipleBorrow(List<Integer> ids);
 
+	String borrowCount();
+
 //	前端请求
 	Integer insertBorrow(Integer userId, Integer journalId);
 

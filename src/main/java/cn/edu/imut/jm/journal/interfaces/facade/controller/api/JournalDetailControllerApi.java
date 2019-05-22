@@ -66,6 +66,9 @@ public interface JournalDetailControllerApi {
 	@RequestMapping(value = "/del-mul-journal", method = RequestMethod.PUT)
 	ResponseVo updateMultipleJournalDetailDel(@RequestBody String json);
 
+	@RequestMapping(value = "/get-journal-chart", method = RequestMethod.GET)
+	ResponseVo journalChart();
+
 //	前端请求
 	@RequestMapping(value = "/get/new-journal", method = RequestMethod.GET)
 	List<JournalDetailVo> getJournalDetails();

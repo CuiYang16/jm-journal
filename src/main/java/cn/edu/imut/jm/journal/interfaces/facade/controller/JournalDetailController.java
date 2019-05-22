@@ -191,6 +191,12 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		return new ResponseVo<>(journalDetailService.updateMultipleJournalDetailDel(ids));
 	}
 
+	@Override
+	public ResponseVo journalChart() {
+
+		return new ResponseVo<>(journalDetailService.journalChart());
+	}
+
 //	前端请求
 	@Override
 	public List<JournalDetailVo> getJournalDetails() {

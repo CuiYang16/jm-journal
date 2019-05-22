@@ -39,6 +39,8 @@ public interface JournalBorrowDao {
 
 	Integer deleteMultipleBorrow(List<Integer> ids);
 
+	Integer borrowCount();
+
 //	前端请求
 	Integer insertBorrow(Borrow borrow);
 

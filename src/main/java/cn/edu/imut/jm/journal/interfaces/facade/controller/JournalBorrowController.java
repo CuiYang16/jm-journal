@@ -92,6 +92,12 @@ public class JournalBorrowController implements JournalBorrowControllerApi {
 		return new ResponseVo<>(journalBorrowService.deleteMultipleBorrow(ids));
 	}
 
+	@Override
+	public ResponseVo borrowCount() {
+
+		return new ResponseVo<>(journalBorrowService.borrowCount());
+	}
+
 //	前端请求
 	@Override
 	public Integer userBorrowJournal(@RequestBody String json) {

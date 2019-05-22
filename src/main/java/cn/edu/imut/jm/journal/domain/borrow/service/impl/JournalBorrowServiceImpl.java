@@ -138,6 +138,12 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 		return null;
 	}
 
+	@Override
+	public String borrowCount() {
+		Integer borrowCount = journalBorrowDao.borrowCount();
+		return borrowCount.toString();
+	}
+
 //	前端请求
 	@Override
 	@Transactional(rollbackFor = Exception.class)

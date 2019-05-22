@@ -530,6 +530,18 @@
 		</foreach>
 	</delete>
 
+	<!-- 所有杂志数 -->
+	<select id="journalCount" resultType="int">
+		select count(*) from journal_details
+	</select>
+
+	<!-- 所有可借阅杂志数 -->
+	<select id="okJournalCount" resultType="int">
+		select count(*) from journal_details where is_delete=0 and inventory &gt; 0
+		and
+		is_borrow =1
+	</select>
+
 	<!-- 前端请求 -->
 	<select id="getJournalDetails" resultMap="JournalDetailVoMap">
 		select
@@ -608,7 +620,8 @@
 	</resultMap>
 	<select id="getBorrowList" resultMap="JournalBorrowVoMap">
 		SELECT
-		j.journal_id, j.journal_name, j.journal_img,
+		j.journal_id,
+		j.journal_name, j.journal_img,
 		j.author,
 		j.journal_level,
 		j.journal_join_time,
@@ -629,7 +642,8 @@
 		j.journal_type,j.inventory,count(j.journal_id) as total
 		FROM
 		journal_details as j inner JOIN borrow as b on
-		b.journal_id=j.journal_id and j.inventory &gt; 0 GROUP BY b.journal_id ORDER BY
+		b.journal_id=j.journal_id and j.inventory &gt; 0 GROUP BY b.journal_id
+		ORDER BY
 		COUNT(b.journal_id) desc limit 18
 	</select>
 </mapper>

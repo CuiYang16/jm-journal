@@ -43,6 +43,10 @@ public interface JournalDetailDao {
 
 	Integer deleteMultipleJournal(List<Integer> ids);
 
+	Integer journalCount();
+
+	Integer okJournalCount();
+
 //	前端请求
 	List<JournalDetailVo> getJournalDetails();
 
