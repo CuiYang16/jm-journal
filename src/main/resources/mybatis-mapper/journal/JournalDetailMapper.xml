@@ -548,7 +548,7 @@
 		<include refid="JournalDetails_Column_List" />
 		from journal_details where is_delete=0 and inventory &gt; 0 and
 		is_borrow =1
-		order by journal_join_time desc limit 8
+		order by journal_join_time desc limit 6
 	</select>
 
 	<select id="getJournalDetailByCheck"
