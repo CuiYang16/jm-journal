@@ -580,7 +580,7 @@
 			<if test="checkValue.level!=null">
 				and journal_level=#{checkValue.level,jdbcType=INTEGER}
 			</if>
-			<if test="checkValue.area!=null and area!=666">
+			<if test="checkValue.area!=null and checkValue.area!=666">
 				and publishing_area=#{checkValue.area,jdbcType=INTEGER}
 			</if>
 			<if test="checkValue.area!=null and checkValue.area==666">

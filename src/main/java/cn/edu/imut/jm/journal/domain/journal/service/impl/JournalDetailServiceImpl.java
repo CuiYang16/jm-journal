@@ -181,6 +181,7 @@ public class JournalDetailServiceImpl implements JournalDetailService {
 	@Override
 	public PageInfo<JournalDetailVo> getJournalDetailByCheck(CheckValue checkValue, Integer currentPage,
 			Integer pageSize, Integer dateSort) {
+
 		if (checkValue != null) {
 			if (checkValue.getTime() != null) {
 				Calendar cl = Calendar.getInstance();
