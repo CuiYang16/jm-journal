@@ -78,6 +78,8 @@
 		type_id,
 		journal_type,inventory
 	</sql>
+
+	<!--条件查询 -->
 	<select id="selectJournalDetails" resultMap="JournalDetailVoMap">
 		select
 		<include refid="JournalDetails_Column_List" />
@@ -93,6 +95,7 @@
 		order by journal_id desc
 	</select>
 
+
 	<select id="selectJournals" resultMap="JournalDetailVoMap">
 		select
 		<include refid="JournalDetails_Column_List" />
@@ -102,6 +105,8 @@
 		</where>
 		order by journal_id desc
 	</select>
+
+	<!-- 根据id查杂志期刊 -->
 	<select id="selectJouanalById" parameterType="int"
 		resultMap="JournalDetailVoMap">
 		select
@@ -134,6 +139,8 @@
 	<sql id="JournalType_Column_List">
 		type_id, type_name,type_describe
 	</sql>
+
+	<!-- 根据id查类别详情 -->
 	<select id="selectTypeById" parameterType="int"
 		resultMap="JournalTypeMap">
 		select
@@ -152,6 +159,7 @@
 			jdbcType="INTEGER" />
 	</resultMap>
 
+	<!--获取附属图片 -->
 	<select id="getImages" parameterType="int"
 		resultMap="JournalImagesMap">
 		select images_id, name, url, journal_id from journal_images
@@ -495,6 +503,7 @@
 		where journal_id = #{journalId,jdbcType=INTEGER}
 	</update>
 
+	<!-- 去激活 -->
 	<update id="updateJournalDetailDel" parameterType="int">
 		update journal_details
 		<set>
@@ -502,12 +511,14 @@
 		</set>
 		where journal_id = #{journalId,jdbcType=INTEGER}
 	</update>
+
+	<!--彻底删除 -->
 	<delete id="deleteJournal" parameterType="java.lang.Integer">
 		delete from
 		journal_details
 		where journal_id = #{journalId,jdbcType=INTEGER}
 	</delete>
-	<!--批量更新删除 -->
+	<!--批量去激活 -->
 	<update id="updateMultipleJournalDetailDel"
 		parameterType="java.util.List">
 		update journal_details
@@ -520,6 +531,7 @@
 			#{journalId,jdbcType=INTEGER}
 		</foreach>
 	</update>
+	<!--批量删除 -->
 	<delete id="deleteMultipleJournal"
 		parameterType="java.util.List">
 		delete from journal_details
@@ -532,12 +544,14 @@
 
 	<!-- 所有杂志数 -->
 	<select id="journalCount" resultType="int">
-		select count(*) from journal_details
+		select count(*) from
+		journal_details
 	</select>
 
 	<!-- 所有可借阅杂志数 -->
 	<select id="okJournalCount" resultType="int">
-		select count(*) from journal_details where is_delete=0 and inventory &gt; 0
+		select count(*) from
+		journal_details where is_delete=0 and inventory &gt; 0
 		and
 		is_borrow =1
 	</select>
@@ -551,6 +565,7 @@
 		order by journal_join_time desc limit 6
 	</select>
 
+	<!-- 条件列表查询 -->
 	<select id="getJournalDetailByCheck"
 		resultMap="JournalDetailVoMap"
 		parameterType="cn.edu.imut.jm.journal.domain.journal.valobj.CheckValue">
@@ -590,6 +605,7 @@
 		</if>
 	</select>
 
+	<!--搜索框查询 -->
 	<select id="getJournalDetailBySearch"
 		resultMap="JournalDetailVoMap">
 		select
@@ -618,6 +634,7 @@
 		id="JournalBorrowVoMap" extends="JournalDetailVoMap">
 		<result column="total" property="total" jdbcType="INTEGER" />
 	</resultMap>
+	<!-- 借阅列表 -->
 	<select id="getBorrowList" resultMap="JournalBorrowVoMap">
 		SELECT
 		j.journal_id,

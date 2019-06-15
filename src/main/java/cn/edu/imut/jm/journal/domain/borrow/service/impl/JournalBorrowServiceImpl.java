@@ -42,9 +42,11 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	public Integer insertBackBorrow(Integer userId, Integer journalId) {
 		if (userId != null && journalId != null && userId != 0 && journalId != 0) {
 			Borrow overdue = journalBorrowDao.selecrtOverdue(userId);
+//			是否有逾期
 			if (overdue != null && overdue.getBorrowId() != null && overdue.getBorrowId() != 0) {
 				return 50008;
 			}
+//			在借大于10
 			List<Borrow> notReturn = journalBorrowDao.selectNotReturn(userId);
 			if (notReturn.size() >= 10) {
 				return 50010;
@@ -80,8 +82,11 @@ public class JournalBorrowServiceImpl implements JournalBorrowService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Integer updateReturnBorrow(Borrow borrow, Integer isPayment) {
+//		实际归还时间
 		borrow.setRealityReturn(new Date());
+//		实际借阅天数
 		borrow.setRealityDays((int) (new Date().getTime() - borrow.getBorrowTime().getTime()) / (24 * 3600 * 1000));
+//		是否逾期
 		borrow.setIsOverdue(new Date().getTime() > borrow.getReturnTime().getTime() ? true : false);
 
 		if (borrow.getIsOverdue()) {

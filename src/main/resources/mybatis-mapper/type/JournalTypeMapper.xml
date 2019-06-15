@@ -131,6 +131,7 @@
 		order by type_index asc
 	</select>
 
+	<!-- 插入 -->
 	<insert id="insertJournalType"
 		parameterType="cn.edu.imut.jm.journal.domain.type.entity.JournalType">
 		insert into journal_type
@@ -175,7 +176,7 @@
 			</if>
 		</trim>
 	</insert>
-
+	<!-- 更新 -->
 	<update id="updateJournalType"
 		parameterType="cn.edu.imut.jm.journal.domain.type.entity.JournalType">
 		update journal_type
@@ -189,7 +190,7 @@
 		</set>
 		where type_id = #{typeId,jdbcType=INTEGER}
 	</update>
-
+	<!-- 删除 -->
 	<delete id="deleteJournalType" parameterType="java.lang.Integer">
 		delete from journal_type
 		where type_id in
@@ -198,7 +199,7 @@
 			#{typeId,jdbcType=INTEGER}
 		</foreach>
 	</delete>
-
+	<!--上移 -->
 	<update id="updateToUp">
 		UPDATE journal_type AS
 		m1,journal_type AS
@@ -224,7 +225,7 @@
 		LIMIT
 		1) t)
 	</update>
-
+	<!-- 下移 -->
 	<update id="updateToDown">
 		UPDATE journal_type AS
 		m1,journal_type AS
@@ -267,8 +268,11 @@
 			jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="JournalType_Column_List">
-		type_id, type_name, type_level, type_index, type_describe, parent_id
+		type_id, type_name, type_level, type_index, type_describe,
+		parent_id
 	</sql>
+
+	<!-- 查询所有一级 -->
 	<select id="selectFirstLevel" resultMap="JournalTypeMap"
 		parameterType="java.lang.Integer">
 		select

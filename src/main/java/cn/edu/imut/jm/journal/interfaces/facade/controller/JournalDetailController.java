@@ -32,6 +32,13 @@ public class JournalDetailController implements JournalDetailControllerApi {
 	@Autowired
 	private JournalDetailService journalDetailService;
 
+	/**
+	 * @Title: selectJournalDetails
+	 * @Description: 分页条件查询杂志期刊详情信息
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#selectJournalDetails(java.lang.Integer,
+	 *           java.lang.Integer, java.lang.Integer, java.lang.Integer)
+	 */
 	public ResponseVo<JournalDetailVo> selectJournalDetails(@RequestParam("pageNum") Integer pageNum,
 			@RequestParam("pageSize") Integer pageSize, @RequestParam("isBorrow") Integer isBorrow,
 			@RequestParam("isDelete") Integer isDelete) {
@@ -45,6 +52,14 @@ public class JournalDetailController implements JournalDetailControllerApi {
 				journalDetailService.selectJournalDetails(pageNum, pageSize, isBorrow, isDelete));
 	}
 
+	/**
+	 * 
+	 * @Title: updateJournalImage
+	 * @Description: 更新杂志封面图片信息
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#updateJournalImage(java.lang.Integer,
+	 *           org.springframework.web.multipart.MultipartFile)
+	 */
 	public ResponseVo updateJournalImage(@RequestParam("journalId") Integer journalId,
 			@RequestParam("file") MultipartFile journalImage) {
 
@@ -72,6 +87,13 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		}
 	}
 
+	/**
+	 * 
+	 * @Title: insertJournalDetail
+	 * @Description: 新增杂志期刊
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#insertJournalDetail(java.lang.String)
+	 */
 	@Override
 	public ResponseVo insertJournalDetail(@RequestBody String json) {
 		JournalDetails journalDetails = JSON.toJavaObject(JSON.parseObject(json).getJSONObject("journalDetails"),
@@ -85,6 +107,13 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		return new ResponseVo<>(0, "添加失败，请刷新重试!");
 	}
 
+	/**
+	 * 
+	 * @Title: selectJouanalById
+	 * @Description: 根据id查杂志期刊
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#selectJouanalById(java.lang.Integer)
+	 */
 	@Override
 	public ResponseVo selectJouanalById(@RequestParam("journalId") Integer journalId) {
 
@@ -92,12 +121,27 @@ public class JournalDetailController implements JournalDetailControllerApi {
 
 	}
 
+	/**
+	 * 
+	 * @Title: getImgUrl
+	 * @Description: 获取杂志封面图片
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#getImgUrl(java.lang.Integer)
+	 */
 	@Override
 	public ResponseVo getImgUrl(@RequestParam("journalId") Integer journalId) {
 
 		return new ResponseVo<>(journalDetailService.getImgUrl(journalId));
 	}
 
+	/**
+	 * 
+	 * @Title: insertJouranlImgs
+	 * @Description: 插入杂志期刊附属图片
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#insertJouranlImgs(java.lang.Integer,
+	 *           org.springframework.web.multipart.MultipartFile)
+	 */
 	@Override
 	public ResponseVo insertJouranlImgs(@RequestParam("journalId") Integer journalId,
 			@RequestParam("file") MultipartFile journalImage) {
@@ -126,12 +170,26 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		}
 	}
 
+	/**
+	 * 
+	 * @Title: getImages
+	 * @Description:获取杂志附属图片
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#getImages(java.lang.Integer)
+	 */
 	@Override
 	public ResponseVo<JournalImages> getImages(@RequestParam("journalId") Integer journalId) {
 
 		return new ResponseVo<JournalImages>(journalDetailService.getImages(journalId));
 	}
 
+	/**
+	 * 
+	 * @Title: updateJournalDetail
+	 * @Description: 编辑杂志期刊信息
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#updateJournalDetail(java.lang.String)
+	 */
 	@Override
 	public ResponseVo updateJournalDetail(@RequestBody String json) {
 		JournalDetails journalDetails = JSON.toJavaObject(JSON.parseObject(json).getJSONObject("journalDetails"),
@@ -145,6 +203,14 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		return new ResponseVo(0, "编辑失败，请刷新重试!");
 	}
 
+	/**
+	 * ]
+	 * 
+	 * @Title: delImages
+	 * @Description: 根据杂志期刊id删除本地图片
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#delImages(java.lang.Integer)
+	 */
 	@Override
 	public ResponseVo delImages(@PathVariable("journalId") Integer journalId) {
 		File file = null;
@@ -165,18 +231,39 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		return new ResponseVo<>(0, "图片操作失败");
 	}
 
+	/**
+	 * 
+	 * @Title: delJournalDetail
+	 * @Description: 去激活
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#delJournalDetail(java.lang.String)
+	 */
 	@Override
 	public ResponseVo delJournalDetail(@RequestBody String json) {
 		Integer journalId = JSON.parseObject(json).getInteger("journalId");
 		return new ResponseVo<>(journalDetailService.delJournalDetail(journalId));
 	}
 
+	/**
+	 * 
+	 * @Title: deleteJournal
+	 * @Description: 彻底删除
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#deleteJournal(java.lang.String)
+	 */
 	@Override
 	public ResponseVo deleteJournal(@RequestBody String json) {
 		Integer journalId = JSON.parseObject(json).getInteger("journalId");
 		return new ResponseVo<>(journalDetailService.deleteJournal(journalId));
 	}
 
+	/**
+	 * 
+	 * @Title: deleteMultipleJournal
+	 * @Description: 批量彻底删除
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#deleteMultipleJournal(java.lang.String)
+	 */
 	@Override
 	public ResponseVo deleteMultipleJournal(@RequestBody String json) {
 		List<Integer> ids = JSON.parseArray(JSON.toJSONString(JSON.parseObject(json).getJSONArray("delIds")),
@@ -184,6 +271,13 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		return new ResponseVo<>(journalDetailService.deleteMultipleJournal(ids));
 	}
 
+	/**
+	 * 
+	 * @Title: updateMultipleJournalDetailDel
+	 * @Description: 批量彻底删除
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#updateMultipleJournalDetailDel(java.lang.String)
+	 */
 	@Override
 	public ResponseVo updateMultipleJournalDetailDel(@RequestBody String json) {
 		List<Integer> ids = JSON.parseArray(JSON.toJSONString(JSON.parseObject(json).getJSONArray("delIds")),
@@ -191,6 +285,13 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		return new ResponseVo<>(journalDetailService.updateMultipleJournalDetailDel(ids));
 	}
 
+	/**
+	 * 
+	 * @Title: journalChart
+	 * @Description: 杂志统计信息，包括杂志期刊总数和可借阅数
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#journalChart()
+	 */
 	@Override
 	public ResponseVo journalChart() {
 
@@ -198,11 +299,25 @@ public class JournalDetailController implements JournalDetailControllerApi {
 	}
 
 //	前端请求
+	/**
+	 * 
+	 * @Title: getJournalDetails
+	 * @Description: 门户网站首页获取杂志期刊信息
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#getJournalDetails()
+	 */
 	@Override
 	public List<JournalDetailVo> getJournalDetails() {
 		return journalDetailService.getJournalDetails();
 	}
 
+	/**
+	 * 
+	 * @Title: getJournalDetailByCheck
+	 * @Description: 条件列表查询
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#getJournalDetailByCheck(java.lang.String)
+	 */
 	@Override
 	public PageInfo<JournalDetailVo> getJournalDetailByCheck(@RequestBody String json) {
 		CheckValue checkValue = JSON.toJavaObject(JSON.parseObject(json).getJSONObject("checkValue"), CheckValue.class);
@@ -212,6 +327,14 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		return journalDetailService.getJournalDetailByCheck(checkValue, currentPage, pageSize, dateSort);
 	}
 
+	/**
+	 * 
+	 * @Title: getJournalDetailBySearch
+	 * @Description: 搜索框查询
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#getJournalDetailBySearch(java.lang.Integer,
+	 *           java.lang.Integer, java.lang.String, java.lang.Integer)
+	 */
 	@Override
 	public PageInfo<JournalDetailVo> getJournalDetailBySearch(@RequestParam("currentPage") Integer currentPage,
 			@RequestParam("pageSize") Integer pageSize, @RequestParam("searchValue") String searchValue,
@@ -220,6 +343,13 @@ public class JournalDetailController implements JournalDetailControllerApi {
 		return journalDetailService.getJournalDetailBySearch(currentPage, pageSize, searchValue, dateSort);
 	}
 
+	/**
+	 * 
+	 * @Title: getBorrowList
+	 * @Description: 借阅列表
+	 * @override @see
+	 *           cn.edu.imut.jm.journal.interfaces.facade.controller.api.JournalDetailControllerApi#getBorrowList()
+	 */
 	@Override
 	public List<JournalBorrowVo> getBorrowList() {
 
